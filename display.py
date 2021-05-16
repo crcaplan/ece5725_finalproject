@@ -7,6 +7,7 @@ import os
 import pygame, sys
 import pygame.display
 import time
+import sensor
 from pygame.locals import *
 from pygame.locals import *
 GPIO.setmode(GPIO.BCM)
@@ -108,6 +109,13 @@ while (1):
                         quit()
         # get the image
         _, img = cap.read()
+        #Rescale the display frame to 320 x 240 pixels
+        rescaled_frame = rescale_frame(img)
+        surface = pygame.surfarray.make_surface(rescaled_frame.transpose(1,0,2)[...,::-1])
+        surface.convert()
+        screen.blit(surface, (0,0))
+        pos = (150,110)
+        pygame.display.flip()
         # get bounding box coords and data
         data, bbox, _ = detector.detectAndDecode(img)
         # if there is a bounding box, draw one, along with the data
@@ -120,6 +128,9 @@ while (1):
         if data:
             #time.sleep(1) # this stops continous detection of data
             print("data found: ", data)
+            #sensor.play_music('ta326')
+            #os.chdir('.')
+            #scan = False
             # display the image preview
             with open('netid.txt') as f:
                 lines = f.readlines()
@@ -128,20 +139,16 @@ while (1):
                     #print('data is ' , data)
                     if ( line.rstrip() == data ):
                         print("match found")
-                        my_buttons[b1] = "success"
+                        #my_buttons[b1] = "success"
+                        sensor.play_music(data)
+                        os.chdir('.')
                         scan = False
                         #cv2.destroyAllWindows()
                         #cap.release() # need cap release so that go back to while loop
                         #quit()
         # display the image preview
         #cv2.imshow("code detector", img)
-        #Rescale the display frame to 320 x 240 pixels
-        rescaled_frame = rescale_frame(img)
-        surface = pygame.surfarray.make_surface(rescaled_frame.transpose(1,0,2)[...,::-1])
-        surface.convert()
-        screen.blit(surface, (0,0))
-        pos = (150,110)
-        pygame.display.flip()
+
         if(cv2.waitKey(1) == ord("q")):
             break
 # free camera object and exit
