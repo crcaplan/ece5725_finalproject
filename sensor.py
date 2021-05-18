@@ -24,6 +24,7 @@ black = 0, 0, 0
 white = 255,255,255
 play = pygame.image.load("./button_blue_play.png")
 pause = pygame.image.load("./button_blue_pause.png")
+vol_icon = pygame.image.load("./vol_icon.png")
 pygame.init()
 pygame.mouse.set_visible(True)
 size = width, height = 320, 240
@@ -46,11 +47,11 @@ GPIO.setup(ECHO, GPIO.IN)
 
 def distance():
     
-    print('sensor settling')
+    #print('sensor settling')
     GPIO.output(TRIGGER, GPIO.LOW)
     time.sleep(0.5)
     
-    print('calculating distance')
+    #print('calculating distance')
     GPIO.output(TRIGGER, GPIO.HIGH)
     time.sleep(0.00001)
     GPIO.output(TRIGGER, GPIO.LOW)
@@ -61,7 +62,7 @@ def distance():
         pulse_end_time = time.time()
     
     pulse_duration = pulse_end_time - pulse_start_time
-    print('got pulse duration')
+    #print('got pulse duration')
     distance = round(pulse_duration * 17150, 2)
     
     return distance
@@ -78,7 +79,7 @@ f = glob.glob('*mp3')
 #length = len(f)
 pointer = 0
 #player = subprocess.Popen(["omxplayer",f[pointer]],stdin=subprocess.PIPE,bufsize=0)
-volume = 8
+
 def start_player(f,pointer):
     print(pointer)
     return subprocess.Popen(["omxplayer",f[pointer]],stdin=subprocess.PIPE,bufsize=0)
@@ -86,6 +87,7 @@ def play_music(user):
     directory = set_directory(user)
     f = glob.glob('*mp3')
     pointer = 0
+    volume = 8
     print(f)
     print(len(f[pointer][0:27]))
     print("hello")
@@ -95,11 +97,16 @@ def play_music(user):
     while (1):
         if ( not GPIO.input(23) ):
             print (" ")
-            print ("Butoon 23 pressed, quitting music")
+            print ("Button 23 pressed, quitting music")
             player.stdin.write(b'q')
             #quit()
             return
         screen.fill(black)
+        volrect = vol_icon.get_rect()
+        volrect = volrect.move(10,40)
+        screen.blit(vol_icon, volrect)
+        for i in range(volume):
+            vol_bar = pygame.draw.rect(screen, white, pygame.Rect(5, (70+15*i), 30, 5))
         if (paused):
             playrect = play.get_rect()
             playrect = playrect.move(100,80)
@@ -109,7 +116,7 @@ def play_music(user):
             pauserect = pauserect.move(100,80)
             screen.blit(pause, pauserect)
         my_song[b1] = f[pointer][0:27]
-        for text_pos,my_text in my_song.items():
+          for text_pos,my_text in my_song.items():
 	        text_surface = my_font.render(my_text,True, white)
 	        rect = text_surface.get_rect(center=text_pos)
 	        screen.blit(text_surface,rect)
@@ -118,7 +125,7 @@ def play_music(user):
     
         if(dist>=0 and dist<=10):
             vol = dist
-            print(dist)
+            #print(dist)
         
             counter = 0
             if(vol>volume):

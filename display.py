@@ -1,7 +1,7 @@
 # author Tamzid Ahmed(ta326) and Claire Caplan(crc235)
 # code to  scan QR code
 # date: 05/06/2021
-import cv2
+#import cv2
 import RPi.GPIO as GPIO
 import os
 import pygame, sys
@@ -23,13 +23,13 @@ os.putenv('SDL_MOUSEDRV', 'TSLIB')
 os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 # taken from aircanvas project
 #Rescales the output frame to 320 x 240 screen
-
+'''
 def rescale_frame(frame, wpercent=130, hpercent=130):
     width = int(frame.shape[1] * wpercent / 100)
     #print("width: " + str(width) "\n height" )
     height = int(frame.shape[0] * hpercent / 100)
     return cv2.resize(frame, (320, 240), interpolation=cv2.INTER_AREA)
-
+'''
 pygame.init()
 pygame.mouse.set_visible(True)
 size = width, height = 320, 240
@@ -46,12 +46,13 @@ info_screen2_buttons = {'Quit':(240,220), 'Next':(80,220), 'Play/Pause: cover L/
 my_buttons = {b1:'Scan', b2: 'Quit'}
 #cap = cv2.VideoCapture(0)
 # QR code detection object
-detector = cv2.QRCodeDetector()
+#detector = cv2.QRCodeDetector()
 scan = False
 start_screen = True
 info_screen1 = False
 info_screen2 = False
 scan_screen = False
+music_screen = False
 while (1):
     if ( not GPIO.input(27) ):
         print (" ")
@@ -75,8 +76,8 @@ while (1):
                         #if click in vicinity of quit button, quit
                         if x > 160:
                             print ( "quit button pressed" )
-                            cv2.destroyAllWindows()
-                            cap.release()
+                            #cv2.destroyAllWindows()
+                            #cap.release()
                             GPIO.cleanup()
                             quit()
                         #if click in vicinity of start button, set flag
@@ -101,8 +102,8 @@ while (1):
                         #if click in vicinity of quit button, quit
                         if x > 160:
                             print ( "quit button pressed" )
-                            cv2.destroyAllWindows()
-                            cap.release()
+                            #cv2.destroyAllWindows()
+                            #cap.release()
                             GPIO.cleanup()
                             quit()
                         #if click in vicinity of next button, set flag
@@ -127,14 +128,14 @@ while (1):
                         #if click in vicinity of quit button, quit
                         if x > 160:
                             print ( "quit button pressed" )
-                            cv2.destroyAllWindows()
-                            cap.release()
+                            #cv2.destroyAllWindows()
+                            #cap.release()
                             GPIO.cleanup()
                             quit()
                         #if click in vicinity of next button, set flag
                         if x < 160:
                             info_screen2 = False
-                            scan_screen = True
+                            music_screen = True
         pygame.display.flip()
     
     if(scan_screen):
@@ -166,8 +167,8 @@ while (1):
                     if ( y > 180 ):
                         if ( x > 190 ):
                             print ( "quit button pressed" )
-                            cv2.destroyAllWindows()
-                            cap.release()
+                            #cv2.destroyAllWindows()
+                            #cap.release()
                             GPIO.cleanup()
                             quit()
                     if ( y > 30 and y < 170 ):
@@ -179,6 +180,7 @@ while (1):
         #detector = cv2.QRCodeDetector()
         #video_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         #video_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        '''
         while scan:
         #while cap.isOpened():
             if ( not GPIO.input(27) ):
@@ -245,6 +247,15 @@ while (1):
 
             if(cv2.waitKey(1) == ord("q")):
                 break
+            '''
+        
+    if(music_screen):
+        sensor.play_music('ta326')
+        os.chdir('.')
+
+
+
+
 # free camera object and exit
 cap.release()
 cv2.destroyAllWindows()
