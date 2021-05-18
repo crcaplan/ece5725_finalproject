@@ -8,6 +8,8 @@ import pygame, sys
 import pygame.display
 import time
 import sensor
+import new_user
+import cv2
 from pygame.locals import *
 from pygame.locals import *
 GPIO.setmode(GPIO.BCM)
@@ -23,13 +25,11 @@ os.putenv('SDL_MOUSEDRV', 'TSLIB')
 os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 # taken from aircanvas project
 #Rescales the output frame to 320 x 240 screen
-'''
 def rescale_frame(frame, wpercent=130, hpercent=130):
     width = int(frame.shape[1] * wpercent / 100)
     #print("width: " + str(width) "\n height" )
     height = int(frame.shape[0] * hpercent / 100)
     return cv2.resize(frame, (320, 240), interpolation=cv2.INTER_AREA)
-'''
 pygame.init()
 pygame.mouse.set_visible(True)
 size = width, height = 320, 240
@@ -40,13 +40,14 @@ my_font_coord = pygame.font.Font(None,20)
 b1 = (150,110)
 b2 = (240,220)
 start_screen_buttons = {'Quit':(240,220), 'Start':(80,220), 'Welcome to':(160,80), 'Touchless Music Player!': (160,100)}
-info_screen1_buttons = {'Quit':(240,220), 'Next':(80,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
+#info_screen1_buttons = {'Quit':(240,220), 'Next':(80,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
+info_screen1_buttons = {'Quit':(260,220), 'Next':(50,220), 'New User':(150,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
 info_screen2_buttons = {'Quit':(240,220), 'Next':(80,220), 'Play/Pause: cover L/R sensors':(160,80), 'Next track: cover L sensor': (160,100),
                         'Previous track: cover R sensor': (160,120), 'Volume: Hand distance': (160,140), 'from center sensor':(160,160)}
 my_buttons = {b1:'Scan', b2: 'Quit'}
-#cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 # QR code detection object
-#detector = cv2.QRCodeDetector()
+detector = cv2.QRCodeDetector()
 scan = False
 start_screen = True
 info_screen1 = False
@@ -99,17 +100,20 @@ while (1):
                     pos = pygame.mouse.get_pos()
                     x,y = pos
                     if y >200:
-                        #if click in vicinity of quit button, quit
-                        if x > 160:
-                            print ( "quit button pressed" )
-                            #cv2.destroyAllWindows()
-                            #cap.release()
-                            GPIO.cleanup()
-                            quit()
                         #if click in vicinity of next button, set flag
-                        if x < 160:
+                        if x < 80:
                             info_screen1 = False
                             info_screen2 = True
+                        elif x < 200:
+                            print("hello")
+                            new_user.create_new_user()
+                        elif x > 220:
+                            #if click in vicinity of quit button, quit
+                            print ( "quit button pressed" )
+                            cv2.destroyAllWindows()
+                            cap.release()
+                            GPIO.cleanup()
+                            quit()
         pygame.display.flip()
     
     if(info_screen2):
@@ -128,14 +132,14 @@ while (1):
                         #if click in vicinity of quit button, quit
                         if x > 160:
                             print ( "quit button pressed" )
-                            #cv2.destroyAllWindows()
-                            #cap.release()
+                            cv2.destroyAllWindows()
+                            cap.release()
                             GPIO.cleanup()
                             quit()
                         #if click in vicinity of next button, set flag
                         if x < 160:
                             info_screen2 = False
-                            music_screen = True
+                            scan_screen = True
         pygame.display.flip()
     
     if(scan_screen):
@@ -167,22 +171,17 @@ while (1):
                     if ( y > 180 ):
                         if ( x > 190 ):
                             print ( "quit button pressed" )
-                            #cv2.destroyAllWindows()
-                            #cap.release()
+                            cv2.destroyAllWindows()
+                            cap.release()
                             GPIO.cleanup()
                             quit()
                     if ( y > 30 and y < 170 ):
                         if ( x> 30 and x < 170):
                             scan = True
                             
-        #cap = cv2.VideoCapture(0)
-        # QR code detection object
-        #detector = cv2.QRCodeDetector()
         #video_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         #video_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        '''
         while scan:
-        #while cap.isOpened():
             if ( not GPIO.input(27) ):
                 print (" ")
                 print ("Button 27 pressed")
@@ -221,12 +220,10 @@ while (1):
                          0, 255), thickness=2)
                 cv2.putText(img, data, (int(bbox[0][0][0]), int(bbox[0][0][1]) - 10), cv2.FONT_HERSHEY_SIMPLEX,
                         0.5, (0, 255, 0), 2)
+            os.chdir('/home/pi/ece5725_finalproject')
             if data:
                 #time.sleep(1) # this stops continous detection of data
                 print("data found: ", data)
-                #sensor.play_music('ta326')
-                #os.chdir('.')
-                #scan = False
                 # display the image preview
                 with open('netid.txt') as f:
                     lines = f.readlines()
@@ -235,23 +232,16 @@ while (1):
                         #print('data is ' , data)
                         if ( line.rstrip() == data ):
                             print("match found")
-                            #my_buttons[b1] = "success"
                             sensor.play_music(data)
-                            os.chdir('.')
+                            os.chdir('/home/pi/ece5725_finalproject')
                             scan = False
-                            #cv2.destroyAllWindows()
-                            #cap.release() # need cap release so that go back to while loop
-                            #quit()
-            # display the image preview
-            #cv2.imshow("code detector", img)
-
             if(cv2.waitKey(1) == ord("q")):
                 break
-            '''
+    """
         
     if(music_screen):
         sensor.play_music('ta326')
-        os.chdir('.')
+        os.chdir('.') """
 
 
 

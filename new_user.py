@@ -20,10 +20,8 @@ from PIL import Image
 # settting up environment varialble for piTFT
 #os.putenv('SDL_VIDEODRIVER', 'fbcon')
 #os.putenv('SDL_FBDEV', '/dev/fb0')
-#os.putenv('SDL_MOUSEDRV', 'TSLIB')
-#os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+os.putenv('SDL_MOUSEDRV', 'TSLIB')
+os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 red =  (255,   0,   0)
 green =  (0,   255,   0)
 black = 0, 0, 0
@@ -37,20 +35,18 @@ qr_screen_buttons = {'Song Selection':(240,220), 'Take a ':(260,80), ' picture o
 b1 = (140,20)
 current_song = {b1:'song name is very long it is'}
 my_font = pygame.font.Font(None,30)
-os.chdir('./playlist/ta326') 
+os.chdir('./playlist/song_library') 
 f = glob.glob('*mp3')
-length = len(f)
-pointer = 0
-print(f)
-# generate a qr code
-# generate random string check if the string is in the list
-# printing lowercase
+#length = len(f)
+#pointer = 0
 def select_playlist():
+    #f = glob.glob('*mp3')
+    length = len(f)
+    pointer = 0
     while(1):
-        global pointer
         screen.fill(black)
         current_song[b1] = f[pointer]
-        playlist_dir = '/home/pi/ece5725_finalproject/playlist/ta326' # for now use this but chnage it to actual folder later
+        playlist_dir = '/home/pi/ece5725_finalproject/playlist/song_library' # for now use this but chnage it to actual folder later
         for my_text,text_pos in new_user_buttons.items():
             text_surface = my_font.render(my_text,True,white)
             rect = text_surface.get_rect(center=text_pos)
@@ -72,16 +68,12 @@ def select_playlist():
                         pointer = pointer + 1
                         if (pointer == length):
                             pointer = 0
-                        #current_song[b1] = f[pointer]
-                        #quit()
                         #if click in vicinity of quit button, quit
                     elif x < 80:
                         print ( "prev button pressed" )
                         pointer = pointer - 1
                         if (pointer == -1):
                             pointer = length - 1
-                        #current_song[b1] = f[pointer]
-                        #quit()
                     elif x < 220:
                         print ("selecting current song")
                         shutil.copy(os.path.join(playlist_dir, f[pointer]), '.') # copy the song to the user playlist
@@ -94,25 +86,22 @@ def create_new_user():
     letters = string.ascii_lowercase
     user = ''.join(random.choice(letters) for i in range(5)) # make a new random userid
     print(user)
-    #netid = open('/home/pi/ece5725_finalproject/netid.txt', 'a')
-    #netid.write(user)
-    #netid.write('\n')
-    #code = qrcode.make(user) # make a qr code
-    print(user+'.png')
-    #code.save('./qrcode/'+user+'.png') # save the qr code
+    netid = open('/home/pi/ece5725_finalproject/netid.txt', 'a')
+    netid.write(user)
+    netid.write('\n')
+    code = qrcode.make(user) # make a qr code
+    code.save('/home/pi/ece5725_finalproject/qrcode/'+user+'.png') # save the qr code
     # make a play list corresponding to the new user
-    #path = '/home/pi/ece5725_finalproject/playlist/'+user
-    #os.makedirs(path)
-    #completeName = os.path.join('/home/pi/ece5725_finalproject/qrcode/', user+".png")
-    #code.save(completeName)
-    completeName = os.path.join('/home/pi/ece5725_finalproject/qrcode/', 'itbfw'+".png")
+    path = '/home/pi/ece5725_finalproject/playlist/'+user
+    os.makedirs(path)
+    completeName = os.path.join('/home/pi/ece5725_finalproject/qrcode/', user+".png")
+    code.save(completeName)
     im = Image.open(completeName)
     im = im.resize((200,200)) # resize the image to make it fit on piTFT
     im.save("test.png")
     #qr = pygame.image.load(completeName)
-    qr = pygame.image.load('test.png')
+    qr = pygame.image.load("test.png")
     # change directory to current user's playlist
-    user = 'utsty' # for testing
     directory = '/home/pi/ece5725_finalproject/playlist/'
     directory += user
     os.chdir(directory)
@@ -135,8 +124,3 @@ def create_new_user():
                 if y >200 and x > 160: # clicked around song selction
                     select_playlist()
                     return
-                    
-                
-            
-#create_new_user()
-#new_user()

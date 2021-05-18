@@ -67,18 +67,11 @@ def distance():
     
     return distance
 
-#os.chdir('/home/pi/ece5725_finalproject/playlist/ta326')
-#os.chdir('/home/pi/final_project/playlist/ta326')
 def set_directory(user):
-    directory = '/home/pi/final_project/playlist/'
+    directory = '/home/pi/ece5725_finalproject/playlist/'
     directory += user
     os.chdir(directory)
     return directory
-f = glob.glob('*mp3')
-#print(f)
-#length = len(f)
-pointer = 0
-#player = subprocess.Popen(["omxplayer",f[pointer]],stdin=subprocess.PIPE,bufsize=0)
 
 def start_player(f,pointer):
     print(pointer)
@@ -116,7 +109,7 @@ def play_music(user):
             pauserect = pauserect.move(100,80)
             screen.blit(pause, pauserect)
         my_song[b1] = f[pointer][0:27]
-          for text_pos,my_text in my_song.items():
+        for text_pos,my_text in my_song.items():
 	        text_surface = my_font.render(my_text,True, white)
 	        rect = text_surface.get_rect(center=text_pos)
 	        screen.blit(text_surface,rect)
@@ -159,7 +152,6 @@ def play_music(user):
             my_song[b1] = f[pointer][0:27]
             paused = False
             player = start_player(f,pointer)
-            #player = subprocess.Popen(["omxplayer",f[pointer]],stdin=subprocess.PIPE,bufsize=0)
         elif ( not GPIO.input(16) ):
             print (" ")
             print ("go forward")
@@ -171,5 +163,3 @@ def play_music(user):
             my_song[b1] = f[pointer][0:27]
             paused = False
             player = start_player(f,pointer)
-            #player = subprocess.Popen(["omxplayer",f[pointer]],stdin=subprocess.PIPE,bufsize=0)
-#play_music('ta326')
