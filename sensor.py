@@ -35,10 +35,12 @@ my_font = pygame.font.Font(None,30)
 
 TRIGGER = 26
 ECHO = 4
+LEFT = 12
+RIGHT = 16
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(16, GPIO.IN) # right sensor
-GPIO.setup(6, GPIO.IN)  # left sensor
+GPIO.setup(RIGHT, GPIO.IN) # right sensor
+GPIO.setup(LEFT, GPIO.IN)  # left sensor
 GPIO.setup(TRIGGER, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 # covering both sensor, pause play
@@ -123,25 +125,25 @@ def play_music(user):
             counter = 0
             if(vol>volume):
                 for counter in range(1,vol-volume):
-                    player.stdin.write("+")
+                    player.stdin.write(b'+')
                     volume = volume + 1
                     time.sleep(0.1)
                     print(counter)
             elif(vol<volume):
                 for counter in range(1,volume-vol):
-                    player.stdin.write("-")
+                    player.stdin.write(b'-')
                     volume = volume - 1
                     time.sleep(0.1)
                     print(counter)
             print("new volume is " + str(volume))
         time.sleep(0.1)
-        if ( not GPIO.input(16) and not GPIO.input(6) ):
+        if ( not GPIO.input(LEFT) and not GPIO.input(RIGHT) ):
             print (" ")
             print ("Pause/Play")
             player.stdin.write(b'p')
             paused = True if paused == False else False;
             time.sleep(0.5)
-        elif ( not GPIO.input(6) ):
+        elif ( not GPIO.input(LEFT) ):
             print (" ")
             print ("go backward")
             player.stdin.write(b'q')
@@ -152,7 +154,7 @@ def play_music(user):
             my_song[b1] = f[pointer][0:27]
             paused = False
             player = start_player(f,pointer)
-        elif ( not GPIO.input(16) ):
+        elif ( not GPIO.input(RIGHT) ):
             print (" ")
             print ("go forward")
             player.stdin.write(b'q')
