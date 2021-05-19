@@ -12,8 +12,8 @@ import time
 from pygame.locals import *
 from pygame.locals import *
 # settting up environment varialble for piTFT
-#os.putenv('SDL_VIDEODRIVER', 'fbcon')
-#os.putenv('SDL_FBDEV', '/dev/fb0')
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.putenv('SDL_FBDEV', '/dev/fb0')
 os.putenv('SDL_MOUSEDRV', 'TSLIB')
 os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 GPIO.setmode(GPIO.BCM)
@@ -178,6 +178,7 @@ def play_music(user):
                 x,y = pos
                 if y >200:
                     if x > 160:
+                        player.stdin.write(b'q')
                         return # quit button pressed
                         
 #play_music('ta326')
