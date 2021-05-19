@@ -18,8 +18,8 @@ import shutil # to copy files
 # Improting Image class from PIL module
 from PIL import Image
 # settting up environment varialble for piTFT
-#os.putenv('SDL_VIDEODRIVER', 'fbcon')
-#os.putenv('SDL_FBDEV', '/dev/fb0')
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.putenv('SDL_FBDEV', '/dev/fb0')
 os.putenv('SDL_MOUSEDRV', 'TSLIB')
 os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 red =  (255,   0,   0)

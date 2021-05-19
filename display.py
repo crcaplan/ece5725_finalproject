@@ -19,8 +19,8 @@ green =  (0,   255,   0)
 black = 0, 0, 0
 white = 255,255,255
 # setting up environment varialble for piTFT
-#os.putenv('SDL_VIDEODRIVER', 'fbcon')
-#os.putenv('SDL_FBDEV', '/dev/fb0')
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.putenv('SDL_FBDEV', '/dev/fb0')
 os.putenv('SDL_MOUSEDRV', 'TSLIB')
 os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 # taken from aircanvas project
@@ -31,7 +31,7 @@ def rescale_frame(frame, wpercent=130, hpercent=130):
     height = int(frame.shape[0] * hpercent / 100)
     return cv2.resize(frame, (320, 240), interpolation=cv2.INTER_AREA)
 pygame.init()
-pygame.mouse.set_visible(True)
+pygame.mouse.set_visible(False)
 size = width, height = 320, 240
 screen = pygame.display.set_mode(size)
 my_font = pygame.font.Font(None,30)

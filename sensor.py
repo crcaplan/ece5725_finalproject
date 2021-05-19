@@ -26,7 +26,7 @@ play = pygame.image.load("./button_blue_play.png")
 pause = pygame.image.load("./button_blue_pause.png")
 vol_icon = pygame.image.load("./vol_icon.png")
 pygame.init()
-pygame.mouse.set_visible(True)
+pygame.mouse.set_visible(False)
 size = width, height = 320, 240
 screen = pygame.display.set_mode(size)
 b1 = (140,20)
@@ -35,8 +35,8 @@ my_font = pygame.font.Font(None,30)
 play_buttons = {'Quit':(240,220)}
 TRIGGER = 26
 ECHO = 4
-#LEFT = 12
-LEFT = 6
+LEFT = 12
+#LEFT = 6
 RIGHT = 16
 
 GPIO.setmode(GPIO.BCM)
