@@ -41,7 +41,7 @@ b1 = (150,110)
 b2 = (240,220)
 start_screen_buttons = {'Quit':(240,220), 'Start':(80,220), 'Welcome to':(160,80), 'Touchless Music Player!': (160,100)}
 #info_screen1_buttons = {'Quit':(240,220), 'Next':(80,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
-info_screen1_buttons = {'Quit':(260,220), 'Next':(50,220), 'New User':(150,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
+info_screen1_buttons = {'Quit':(260,220), 'Next':(50,220), 'New User':(160,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
 info_screen2_buttons = {'Quit':(240,220), 'Next':(80,220), 'Play/Pause: cover L/R sensors':(160,80), 'Next track: cover L sensor': (160,100),
                         'Previous track: cover R sensor': (160,120), 'Volume: Hand distance': (160,140), 'from center sensor':(160,160)}
 my_buttons = {b1:'Scan', b2: 'Quit'}
@@ -77,8 +77,8 @@ while (1):
                         #if click in vicinity of quit button, quit
                         if x > 160:
                             print ( "quit button pressed" )
-                            #cv2.destroyAllWindows()
-                            #cap.release()
+                            cv2.destroyAllWindows()
+                            cap.release()
                             GPIO.cleanup()
                             quit()
                         #if click in vicinity of start button, set flag

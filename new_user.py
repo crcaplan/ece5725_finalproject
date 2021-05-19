@@ -28,15 +28,30 @@ black = 0, 0, 0
 white = 255,255,255
 pygame.init()
 pygame.mouse.set_visible(False)
+
+#song covers
+alone = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Alone - Marshmello.png')
+animal = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Animals - Neon Trees.png')
+bellyache = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Bellyache - Billie Eilish.png')
+friends = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/FRIENDS - Anne-Marie.png')
+good_days = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Good Days - SZA.png')
+beatles = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Help! - The Beatles.png')
+paradise = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Paradise - Coldplay.png')
+shy_away = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Shy Away - 21 Pilots.png')
+solo = pygame.image.load('/home/pi/ece5725_finalproject/playlist/song_library/album_covers/Solo - Clean Bandit.png')
+
+cover_list = [animal, alone, bellyache, good_days, beatles, shy_away, solo, friends, beatles, paradise]
+
 size = width, height = 320, 240
 screen = pygame.display.set_mode(size)
-new_user_buttons = {'Prev':(50,220),'Next':(120,220), 'Select':(190,220), 'done':(270,220)}
+new_user_buttons = {'Prev':(50,220),'Next':(120,220), 'Select':(190,220), 'Done':(270,220)}
 qr_screen_buttons = {'Song Selection':(240,220), 'Take a ':(260,80), ' picture of ': (260,100), 'your QR' : (260,120), 'code' : (260,140)}
 b1 = (140,20)
 current_song = {b1:'song name is very long it is'}
 my_font = pygame.font.Font(None,30)
 os.chdir('./playlist/song_library') 
 f = glob.glob('*mp3')
+
 #length = len(f)
 #pointer = 0
 def select_playlist():
@@ -46,6 +61,10 @@ def select_playlist():
     while(1):
         screen.fill(black)
         current_song[b1] = f[pointer]
+        current_cover = cover_list[pointer]
+        cover_rect = current_cover.get_rect()
+        cover_rect = cover_rect.move(100,65)
+        screen.blit(current_cover, cover_rect)
         playlist_dir = '/home/pi/ece5725_finalproject/playlist/song_library' # for now use this but chnage it to actual folder later
         for my_text,text_pos in new_user_buttons.items():
             text_surface = my_font.render(my_text,True,white)
