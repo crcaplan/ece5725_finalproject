@@ -32,10 +32,11 @@ screen = pygame.display.set_mode(size)
 b1 = (140,20)
 my_song = {b1:'song name is very long it is'}
 my_font = pygame.font.Font(None,30)
-
+play_buttons = {'Quit':(240,220)}
 TRIGGER = 26
 ECHO = 4
-LEFT = 12
+#LEFT = 12
+LEFT = 6
 RIGHT = 16
 
 GPIO.setmode(GPIO.BCM)
@@ -115,6 +116,10 @@ def play_music(user):
 	        text_surface = my_font.render(my_text,True, white)
 	        rect = text_surface.get_rect(center=text_pos)
 	        screen.blit(text_surface,rect)
+        for my_text,text_pos in play_buttons.items():
+	        text_surface = my_font.render(my_text,True, white)
+	        rect = text_surface.get_rect(center=text_pos)
+	        screen.blit(text_surface,rect)
         pygame.display.flip()
         dist = int(distance())
     
@@ -141,7 +146,7 @@ def play_music(user):
             print (" ")
             print ("Pause/Play")
             player.stdin.write(b'p')
-            paused = True if paused == False else False;
+            paused = True if paused == False else False
             time.sleep(0.5)
         elif ( not GPIO.input(LEFT) ):
             print (" ")
@@ -165,3 +170,14 @@ def play_music(user):
             my_song[b1] = f[pointer][0:27]
             paused = False
             player = start_player(f,pointer)
+        for event in pygame.event.get():
+            if(event.type is MOUSEBUTTONDOWN):
+                pos = pygame.mouse.get_pos()
+            if(event.type is MOUSEBUTTONUP):
+                pos = pygame.mouse.get_pos()
+                x,y = pos
+                if y >200:
+                    if x > 160:
+                        return # quit button pressed
+                        
+#play_music('ta326')

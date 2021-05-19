@@ -235,6 +235,8 @@ while (1):
                             sensor.play_music(data)
                             os.chdir('/home/pi/ece5725_finalproject')
                             scan = False
+                            scan_screen = False
+                            start_screen = True
             if(cv2.waitKey(1) == ord("q")):
                 break
     """
