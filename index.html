@@ -62,7 +62,6 @@
     <div class="container">
 
       <div class="starter-template">
-        <img src="pics/robot.jpg" width="800" />
         <h1>Touchless Music Player</h1>
         <p class="lead">ECE 5725 Project<br>Tamzid Ahmed (ta326) and Claire Caplan (crc235)<br>05/19/2021</p>
       </div>
@@ -104,7 +103,7 @@
               <p style="text-align: left;padding: 0px 30px;">  
               </p>
                 <br>
-                <img class="img-rounded" src="pics/ball-diagram.png" alt="Generic placeholder image" width="600">                
+                <!-- <img class="img-rounded" src="pics/ball-diagram.png" alt="Generic placeholder image" width="600">  -->              
             <p style="text-align: left;padding: 0px 30px;">
                 
             
@@ -115,10 +114,6 @@
 
             </p>
               <h4 style="text-align: left;text-indent: 0.8cm">Hand gesture detection: </h4>
-              <p style="text-align: left;padding: 0px 30px;">
-                Similar to the ball tracking system, this subsystem will also utilize the OpenCV library. Our goal will be to detect for the hand and to detect on the number of lifted fingers, which would represent the intended digits. We will be calculating the contour and Convex Hull of the hand, and then to calculate the number of defects. The defects would show the gaps between the fingers, which would tell us on how many fingers are lifted. 
-                This method is inspired by the <a href="https://courses.ece.cornell.edu/ece5990/ECE5725_Spring2020_Projects/May_15_Demo/Air%20Painter/awt46_sc2524_Thursday-3/awt46_sc2524_Thursday/index.html">ECE 5725 Air Painter project</a> and <a href="http://creat-tabu.blogspot.com/2013/08/opencv-python-hand-gesture-recognition.html">this hand gesture project</a>            
-             </p>
              <!--
               <h4 style="text-align: left;text-indent: 0.8cm">Motor Control: </h4>
               <p style="text-align: left;padding: 0px 30px;">The robot system was based on the robot base platform used in ECE 5725 labs. The robot base is driven by two DC motors, which are connected to a motor controller. Using the motor controller, we are able to control the speed of the motor using the duty cycle of the PWM signal and to control the motor direction using the direction pin signals. The connection setup of a single motor is shown below.</p>
@@ -142,8 +137,6 @@
               <h4 style="text-align: left;text-indent: 0.8cm">Ball tracking system: </h4>
               <p style="text-align: left;padding: 0px 30px;">
               </p>
-              <img class="img-rounded" src="pics/ball-closing.png" alt="Generic placeholder image" style="width:300px;">
-              <img class="img-rounded" src="pics/ball.png" alt="Generic placeholder image" style="width:300px;">
 
               <h4 style="text-align: left;text-indent: 0.8cm">Hand gesture detection: </h4>
               <p style="text-align: left;padding: 0px 30px;"> </p>
@@ -151,22 +144,9 @@
       </div>
       <div style="text-align:left;">        
         <pre><code>
-            if defects_most == 0:
-            # If hull is 10% bigger than contour => finger 1
-            if (area_hull-area_cnt)/(area_cnt) > .15: 
-                finger = 1
-            else:
-                finger = 0</code></pre>
+            inser Generic code</code></pre>
       </div>
       <div style="text-align:center;">
-            <p style="text-align: left;padding: 0px 30px;">
-              </p>
-              <img class="img-rounded" src="pics/hand_0.png" alt="Generic placeholder image" style="width:400px;">
-              <img class="img-rounded" src="pics/hand_1.png" alt="Generic placeholder image" style="width:400px;">
-              <br>
-              <img class="img-rounded" src="pics/hand_2.png" alt="Generic placeholder image" style="width:400px;">
-              <img class="img-rounded" src="pics/hand_3.png" alt="Generic placeholder image" style="width:400px;">
-              <br>Left image shows the thresholded HSV image of the fingers and right images shows the image feed of the finger along with the predicted finger digit.
               <p style="text-align: left;padding: 0px 30px;">
               </p>
             <img class="img-rounded" src="pics/hand_0_ball.png" alt="Generic placeholder image" style="width:30%;">
@@ -174,36 +154,22 @@
             <img class="img-rounded" src="pics/hand_2_ball.png" alt="Generic placeholder image" style="width:30%;">
 
               <h4 style="text-align: left;text-indent: 0.8cm">Motor Control: </h4>
-              <p style="text-align: left;padding: 0px 30px;">After verifying the performance of the ball detection function and the hand detection function. The detection program was integrated and tested with the motor control. Tests showed that the performance of the robot was largely affected by the exposure. The camera will automatically adjust its video feed brightness based on the current exposure, which affects the color detection of the robot and hand. Additionally, we found that the ball and hand gesture detection did not perform well if the robot is facing a crowded background.</p>
-              <p style="text-align: left;padding: 0px 30px;">When the robot was moving, it was hard to keep a constant background and light exposure as the robot is moving around a room. As a result, the robot would not be able to detect the ball or hand gesture well. With all these constrains, we have decided to test the robot in a closed space. The robot will always be facing a single direction towards a plain white wall. Additionally, testing in this closed space helps keep a constant light exposure. </p>
-	          <img class="img-rounded" src="pics/test1.jpg" alt="Generic placeholder image" style="width:30%;"> <img class="img-rounded" src="pics/test2.jpg" alt="Generic placeholder image" style="width:30%;"> <img class="img-rounded" src="pics/test3.jpg" alt="Generic placeholder image" style="width:30%;">
+              <p style="text-align: left;padding: 0px 30px;"></p>
               <br> Several images describing how our robot system was tested.<br><br>
-              <p style="text-align: left;padding: 0px 30px;">During the ball tracking mode test, the robot initial position is to face the plain wall. Hand gestures were then presented to control the robot moving forward, backward and stop. Then, hand gesture of showing “1” would be presented to the robot to ball tracking mode. To test the ball tracking function, a tennis ball was placed in front of the robot and moved in a zigzag pattern. In this way, the ball tracking function could be tested while maintaining a consistent background for the camera.</p>
-              <p style="text-align: left;padding: 0px 30px;">During the initial testings, the tracking movement is not smooth and the ball is not tracked well. 
-                As a result, we needed to tweak the kp and kd values in order to make the tracking smoother. This involves a lot of trials and errors, but in the end we are able to find the right values that would track the ball well.
-                We have also added a constant duty cycle value into the equation, which allows us to set the minimum duty cycle of the motor. This is because we have learned that the motor will only move above the duty cycle of 40 in order for the motor to overcome the wheel's friction to the ground. 
-                Additionally, we have also tested on how well the robot is finding a new ball after it has lost it. We have noticed that there are cases where we would receive false positives of detected ball from a crowded background. As a result, we determined that the detected object is a ball only if it is still there after some time (or some captured frames). A code snippet from the main loop is included below to describe the process:
         </div>
         <div style="text-align:left;">        
                 <pre><code>
-                # If ball was previously not detected
-                if ball_detected == 0 and ball_verify == 0:
-                    ball_first_detected = time.time()
-                    ball_verify = 1
-                if ball_verify == 1 and (time.time() - ball_first_detected) > 0.1: # Verification after .1 second passes, ball still detected
-                    ball_detected = 1
-                    ball_verify = 0</code></pre>
+                # genereic code</code></pre>
             
             
             <h4 style="text-align: left;text-indent: 0.8cm">User Interface: </h4>
-            <p style="text-align: left;padding: 0px 30px;">This is the subsystem with the most straightforward testing. We tested on how the buttons will correctly transition between modes. Additionally, during the "Ball-Tracking" mode, we made sure that the ball distance will be displayed correctly. Below are the images showing the PiTFT display during "Stop" and "Ball-Tracking" mode. Notice how the display on the "Ball-Tracking" mode will display the current ball distance.</p>
+            <p style="text-align: left;padding: 0px 30px;"></p>
             
             
       </div>
       <div style="text-align: center">
         <img class="img-rounded" src="pics/screen1.jpg" alt="Generic placeholder image" style="width:30%;">
         <img class="img-rounded" src="pics/screen2.jpg" alt="Generic placeholder image" style="width:30%;">
-        <br>The left image shows the display during the "Stop" mode. The right image shows the display during the "Ball-Tracking" mode.
     </div>
       
       
@@ -222,23 +188,13 @@
 
       <div style="text-align:center;">
               <h2>Future Works</h2>
-              <p style="text-align: left;padding: 0px 30px;">Based on the discussion in the Results section, there are some improvements that may be done. In the current design, the functions are achieved within a single program. Because the computer vision requires a relatively large amount of processing power, the speed of the program is limited by the performance of a single core on Raspberry Pi. This resulted a noticeable latency when detecting the ball. The latency significantly affected the performance of the robot and can cause the robot losing the ball or hitting into the ball when the robot is moving relatively fast. Our future work will include using multiprocessing to separate the camera functions and the control programs to process in different threads. This will help us utilize the multicore processing power of Pi to increase the speed of the program thus improve the performance of our robot. 
-                <br>Another future improvement could be using better motors. In the current design, the performance of the motor is not very consistent. The left and right motor tend to have different speed under the same duty cycle and stall at different duty cycle. This caused a problem when implementing the motor control. A more precise motor will improve the performance significantly. The power supply can also be improved in the future design. The power bank used in current design cannot provide enough power for the Raspberry Pi. This lowers the clock frequency of the Pi and slows down the program. Our future work will be looking for a mobile power supply which could provide a stable 5V3A output to power the Pi. 
-                Finally, we mentioned in the Results section that our detection algorithm are having trouble when facing a crowded background. There may some improvements that can be done here, perhaps on performing a continuous background subtraction on every several frames. This would allow the robot to be more robust and to work without needing a constantly plain background.</p>
+              <p style="text-align: left;padding: 0px 30px;"> </p>
       </div>
 
       <hr id='conclusion'>
 
       <div style="text-align:center;">
               <h2>Conclusion</h2>
-              <p style="text-align: left;padding: 0px 30px;">The main goal of the robot is to be able to track and follow a tennis ball, where in the scope of this prototype the ball represents a human. 
-                    We also wanted to allow the user to control the robot using their hand gestures. 
-                    Additionally, the robot should provide a user interaction by displaying information or buttons through the touchscreen display. 
-                    The robot is able to perform the above goals well, as shown in the demo video. 
-                    However, we have discovered several limitations of the robot, such as its sensitivity to exposure changes and crowded backgrounds.
-                    These are issues that may be fixed through future works.
-                    With the success that was achieved in this first prototype, we are one step closer to making a human-tracking ground robot.
-
       </div>
 
     <hr>
@@ -262,24 +218,20 @@
     <div class="row" style="text-align:center;">
       <h2>Work Distribution</h2>
       <div class="col-md-6" style="font-size:16px">
-          <img class="img-rounded" src="pics/jonathan.jpg" alt="Generic placeholder image" width="240" height="240">
-          <h3>Jonathan Nusantara</h3>
-          <p class="lead">jan265@cornell.edu<br>ECE MEng '20</p>
+          <img class="img-rounded" src="" alt="Generic placeholder image" width="240" height="240">
+          <h3>Tamzid Ahmed</h3>
+          <p class="lead">ta326@cornell.edu<br>ECE '21</p>
           <div style="text-align:left">
-            <li>Designed the CV program for tennis ball and hand gesture detection.
-            <li>Integrated CV results to robot controls.
-            <li>Assisted in PID motor control testings.
+            <li>some work
           </div>
       </div>
       <div class="col-md-6" style="font-size:16px">
-          <img class="img-rounded" src="pics/Jiaxuan.jpg" alt="Generic placeholder image" width="240" height="240">
+          <img class="img-rounded" src="" alt="Generic placeholder image" width="240" height="240">
           <h3>Jiaxuan Su</h3>
-          <p class="lead">js3596@cornell.edu<br>ECE MEng '20</p>
+          <p class="lead">crc236@cornell.edu<br>ECE '21</p>
           <div style="text-align:left">
-                <li>Designed the overall control algorithm
-                <li>Designed and tested PID motor control 
-                <li>Integrated CV ball detection with motor control
-            </div>
+                <li>
+          </div>
       </div>
   </div>
 
