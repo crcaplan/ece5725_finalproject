@@ -31,7 +31,7 @@ def rescale_frame(frame, wpercent=130, hpercent=130):
     height = int(frame.shape[0] * hpercent / 100)
     return cv2.resize(frame, (320, 240), interpolation=cv2.INTER_AREA)
 pygame.init()
-pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(True)
 size = width, height = 320, 240
 screen = pygame.display.set_mode(size)
 my_font = pygame.font.Font(None,30)
