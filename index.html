@@ -62,20 +62,18 @@
           <iframe width="640" height="360" src="https://www.cornell.edu/video/glorious-to-view" frameborder="0" allowfullscreen></iframe>
       </div>
 
-      <hr id='obj'>
-
+    <hr id='obj'>
     <div style="text-align:center;">
         <h2>Objective</h2>
         <p style="text-align: left;padding: 0px 30px;">Touchless music player uses a Raspberry Pi to function as a jukebox by allowing users to make their own personalized playlist and select a song to be played from the playlist on a speaker connected to the Raspberry Pi. Each user has their own QR code that they need to scan so that their playlist can be displayed on piTFT from which they can select the song that they want to play through hand gestures</p>
-          <img class="img-rounded" src="" alt="picture of the 3d structure" style="width:30%;">
-      </div>
+          <!--<img class="img-rounded" src="" alt="picture of the 3d structure" style="width:30%;">-->
       </div>
 
     <hr id="intro">
     <div style="text-align:center;">
       <h2>Introduction</h2>
       <p style="text-align: left;padding: 0px 30px;"> The project started with installing opencv and required libraries on Raspberry Pi. We installed piCamera and integrated it with openCV to detect QR code when the user holds the QRcode in front of the camera. We wrote a python script to detect the QRcode using openCV and qrcode library from python. Next we collected all the required parts needed for the hand gesture recognition circuit. We used Adafruit break beam sensors for song selection, play/pause and an ultrasonic sensor to control the volume. The explanation of how the circuit works will be explained in the design section. Once we made a schematic for the hand gesture and checked the correctness of the circuit with the TAs we tested the circuit by checking the piscope signal and writing python scripts and checking the outputs in the terminal. After that we wrote a script to control song selection using IR sensors and volume control using ultrasonic sensors. Once the song selection was working, we had to integrate the QR scanning with song selection so that once the users scan their QR code, they can play music using hand gestures. We also added an option for a new user to receive a QR code and select the songs that they want to be in their playlist. Once all the programming was done, we also made a 3D printed structure to hold the whole music system. Our device, as well as both team members, can be seen in Figure 1 below. </p>
-  </div>
+    </div>
     <!--
     <div style="text-align:center;">
             <h2>Introduction</h2>
