@@ -74,7 +74,9 @@
     <div style="text-align:center;">
       <h2>Introduction</h2>
       <p style="text-align: left;padding: 0px 30px;"> The project started with installing opencv and required libraries on Raspberry Pi. We installed piCamera and integrated it with openCV to detect QR code when the user holds the QRcode in front of the camera. We wrote a python script to detect the QRcode using openCV and qrcode library from python. Next we collected all the required parts needed for the hand gesture recognition circuit. We used Adafruit break beam sensors for song selection, play/pause and an ultrasonic sensor to control the volume. The explanation of how the circuit works will be explained in the design section. Once we made a schematic for the hand gesture and checked the correctness of the circuit with the TAs we tested the circuit by checking the piscope signal and writing python scripts and checking the outputs in the terminal. After that we wrote a script to control song selection using IR sensors and volume control using ultrasonic sensors. Once the song selection was working, we had to integrate the QR scanning with song selection so that once the users scan their QR code, they can play music using hand gestures. We also added an option for a new user to receive a QR code and select the songs that they want to be in their playlist. Once all the programming was done, we also made a 3D printed structure to hold the whole music system. Our device, as well as both team members, can be seen in Figure 1 below. </p>
-  </div>
+      <br>
+      <img class="img-rounded" src="" alt="Figure 1: Finished “Touchless Music Player” prototype" width="600" style="text-align: center">
+    </div>
     <!--
     <div style="text-align:center;">
             <h2>Introduction</h2>
@@ -89,39 +91,43 @@
     <hr id='design'>
 
       <div style="text-align:center;">
-              <h2>Design</h2>
-              <p style="text-align: left;padding: 0px 30px;">                
-              </p>
-                <br>
-                <img class="img-rounded" src="" alt="Generic placeholder image" width="600" style="text-align: center">
-                <br> A picture of the design
-              <p style="text-align: left;padding: 0px 30px;">  
-              </p>
-                <br>
-                <!-- <img class="img-rounded" src="pics/ball-diagram.png" alt="Generic placeholder image" width="600">  -->              
+              <h2>Design</h2>            
             <p style="text-align: left;padding: 0px 30px;">
-                
-            
-                <br>In the section below, we will have a more in-depth discussion on how each subsystem is designed.
+              <br>In the section below, we will have a more in-depth discussion on how each subsystem is designed.
             </p>
-              <h4 style="text-align: left;text-indent: 0.8cm">Ball tracking system: </h4>
-              <p style="text-align: left;padding: 0px 30px;"> </p>
-
+              <h4 style="text-align: left;text-indent: 0.8cm">QR Code Detection:: </h4>
+              <p style="text-align: left;padding: 0px 30px;"> 
+                We began our project by first installing OpenCV on the Raspberry Pi. Following the instructions provided on Canvas, we were able to install OpenCV for Python3. Using a camera installation reference video from the Raspberry Pi official channel, we installed the PiCamera on the Raspberry Pi. Next we used the provided Canvas example on OpenCV to learn how to use OpenCV and to install the required libraries needed for OpenCV and QR code scanners [1]. Following the instructions in [1], we were able to write a python script qr_scanner.py that can scan a QR code using the PiCamera and show the message embedded in the QR code on the PiCamera window and the terminal. We tested the script by checking if the previously generated QR codes can be detected and if the message embedded in the QR code can be read by the camera. Once the script reads the data from the QR code, it checks if the username already exists in a text file called netid.txt where we stored all known users in the system.
+                <br>
+                <br>
+                All the testing early in the project development was done on the desktop, where the Pygame GUI and camera feed were in two separate windows like in Figure 3 below.
             </p>
-              <h4 style="text-align: left;text-indent: 0.8cm">Hand gesture detection: </h4>
-             <!--
-              <h4 style="text-align: left;text-indent: 0.8cm">Motor Control: </h4>
-              <p style="text-align: left;padding: 0px 30px;">The robot system was based on the robot base platform used in ECE 5725 labs. The robot base is driven by two DC motors, which are connected to a motor controller. Using the motor controller, we are able to control the speed of the motor using the duty cycle of the PWM signal and to control the motor direction using the direction pin signals. The connection setup of a single motor is shown below.</p>
-              <img class="img-rounded" src="pics/circuit1.png" alt="Generic placeholder image" width="600" style="text-align: center">
-              <br>Schematic diagram of a single motor setup.<br><br>
-              <p style="text-align: left;padding: 0px 30px;">During the manual forward and backward movement, the robot will have a constant duty cycle and direction throughout the process. On the other hand, during the ball tracking mode, we are setting the individual motor speed depending of the position of the tracked ball. We decided to use a PID control algorithm to calculate the duty cycle of the PWM signal for the each motor. This would allow a smooth steering of the robot in tracking the ball.</p>
-              <img class="img-rounded" src="pics/pid.jpeg" alt="Generic placeholder image" width="600" style="text-align: center">
-              <br>Flowchart of a PID control algorithm.<br><br>
-              <p style="text-align: left;padding: 0px 30px;">We have decided to only use PD control considering that our robot was a relatively simple system. The integral control would add complexity to our program and could possibly cause problems more than improve the performance of our robot. In the ball detection program, the distance from the edge of the ball to the edge of the screen was calculated for both sides of the ball. The PD control used these two values as the inputs. Two separate functions were used to calculate the speed of two motors. The proportional term of the motor speed was calculated by the distance times the proportional coefficient (kp), where the motor will be faster if the ball is further, and vice versa. The derivative term was calculated by the current distance minus the distance in the previous frame then times the derivative coefficient (kd), which allows some level of smoothing for velocity changes.</p>
-              <p style="text-align: center;padding: 0px 30px;">speed = kp * distance + kd * (distance - previous_distance)</p>
-              <h4 style="text-align: left;text-indent: 0.8cm">User Interface: </h4>
-              <p style="text-align: left;padding: 0px 30px;">The User Interface will be displayed on the touchscreen PiTFT display attached to the Raspberry Pi. This will be done using the PyGame library, which allows us to display text or buttons on the display.
-                The display will be rather simple with a goal of an "easy-to-use" robot. During the "Stop" mode, the screen will display a green button to go to the "Ball-Tracking" mode. It will also display the current robot mode mode. During any other mode where the robot will be moving, the screen will display the red button to go to "Stop" mode. During the "Ball-Tracking" mode, aside from displaying the red button, it will also display how far the detected ball is from the robot in centimeters. </p> -->
+            <img class="img-rounded" src="" alt="Figure 2: Desktop testing of camera scanner code" width="600" style="text-align: center">
+            <br>
+            <br>
+            <p style="text-align: left;padding: 0px 30px;">
+              We wanted our project to be deployed on a standalone Raspberry Pi and thus we needed the camera window to show up on the PiTFT display. Initially we could not get the camera window to show up on the PiTFT display as our program would just hang and the PiTFT would not respond to any further inputs. After following references from the Air Canvas project from Fall 2019 we were able to make the camera window show up on PiTFT. We needed to rescale the PiCamera feed window to PiTFT screen size(320x240) and render the camera display on the Pygame window, which we implemented in a helper function, and then the camera feed showed up as expected. This is seen below in Figure 3.
+              <br>
+              <br>
+          </p>
+          <img class="img-rounded" src="" alt="Figure 3: PiTFT testing of camera scanner code" width="600" style="text-align: center">
+          <br>
+          <br>
+              <h4 style="text-align: left;text-indent: 0.8cm">Sensor schematic development:: </h4>
+              <br>
+              <br>
+              <p style="text-align: left;padding: 0px 30px;">
+                Initially, we planned to use a combination of IR emitters and photodiodes to sense hand motions for play/pause control and skipping/rewinding tracks, and an ultrasonic sensor to control volume based on hand distance from the music playing unit. However, the IR emitter/photodiode pairs would have required an unnecessarily complicated hardware setup involving a tunable amplifier circuit with an op-amp and potentiometers in order to be read by the Raspberry Pi GPIO pins. At the suggestion of the professor, we elected to design our hand motion detection hardware around two emitter/receiver pairs of Adafruit break-beam sensors, which simplified this aspect of the hardware greatly and increased its reliability.
+                <br>
+                <br>
+             The break-beam sensors come in emitter/receiver pairs. The emitter is connected to a voltage source and grounded, and emits a constant IR beam. The receiver is an IR-sensitive device, and is also connected to the same voltage source and ground, but it includes an additional signal output. When the beam “connection” is broken by a non IR-transparent object (for example, the human hand), this signal output will drop to a logic low which can be detected by a Raspberry Pi GPIO input-configured pin.
+                <br>
+                <br>
+             The ultrasonic sensor estimates an object’s distance from its emitters by sending out ultrasonic sound pulses and converting the reflected sound into electrical signals. Our sensor is powered by a 5V supply from the Raspberry Pi, and grounded on the same common ground as the rest of our circuit. From a GPIO output pin, we send electrical pulse signals over the trigger pin to trigger ultrasonic emissions from the device. We read the reflected electrical signal on a GPIO input pin and determine distance from the pulse width in time of the reflected signal.
+                <br>
+                <br>
+               Because we chose to run both the break-beam sensors and the ultrasonic sensor off of a 5V supply from the Raspberry Pi, we needed to step the voltage outputs of these sensors down to 3.3V because this is the maximum logic voltage supported by the Raspberry Pi’s GPIO pins. We initially set up our ultrasonic sensor with a voltage divider which halved the 5V output of the sensor to a maximum of 2.5V. Our initial schematic with this implementation is shown below in Figure 4
+            </p>
       </div>
 
     <hr id='testings'>
