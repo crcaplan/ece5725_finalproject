@@ -1,5 +1,5 @@
 # author Tamzid Ahmed(ta326) and Claire Caplan(crc235)
-# code for sensing hand gesture code
+# code for making playlist for a new user
 # date: 05/10/2021
 import time
 import glob
