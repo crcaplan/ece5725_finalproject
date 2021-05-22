@@ -196,6 +196,88 @@ iii) Previous song: Left receiver blocked
 </p>
 <br>
 <br>
+<h4 style="text-align: left;text-indent: 0.8cm">Software integration: Pygame GUI: </h4>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  In order to make device usage clear and concise to our users, we created a Pygame GUI framework. The first screen in the GUI is the start screen, which has two buttons: ‘Start’ and ‘Quit.’ The ‘Start’ button takes the users to the next screen and the ‘Quit’ button ends the program. We also had a welcome message in the start screen. Below is a picture of the start screen
+</p>
+<img class="img-rounded" src="" alt="Figure 9: Start screen in Pygame GUI" width="600" style="text-align: center">
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  The next two screens are the instruction screens that instruct the user to 1) scan their QR code to load their personal playlist, and 2) describe how the touchless control sensors work. The first instruction screen contains the same ‘Quit’ button as the start screen, as well as a ‘Next’ button to proceed to the next instruction page. In addition, this screen also has a new user button which a new user needs to press to get their QR code and make their playlist. Pre-existing users can press the next button twice to proceed through the sensor control instructions to the scan screen.
+  </p>
+<img class="img-rounded" src="" alt="Figure 10: First instruction screen in Pygame GUI" width="600" style="text-align: center">
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  If a new user wants to create a custom playlist, they must click on the new user button on the instruction screen which will generate a new user id, QR code, and a playlist folder for the user. The user id is saved in the ‘netid.txt’ file to be used later in scanning. The user is also instructed to take a picture of their QR code for future use.
+</p>
+<img class="img-rounded" src="" alt="Figure 11: New user QR code display" width="600" style="text-align: center">
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  Once the user saves their QR code and presses the ‘Song Selection’ button, the songs from the song_library folder are shown with each song’s information and album cover image on one page. The user can then use ‘Prev’ and ‘Next’ buttons to traverse through the songs. Pressing on the ‘Select’ button adds the song to the user’s playlist which was created in the last step. Once the user is done selecting the songs they can press the ‘Done’ button which redirects the user to the first instruction screen.
+</p>
+<img class="img-rounded" src="" alt="Figure 12: Figure 12: New user playlist selection interface" width="600" style="text-align: center">
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  Any user who has a pre-existing saved QR code and playlist only needs to press the ‘Next’ button from the instruction screen which will show them one more instruction screen with information on the touchless control sensors. Pressing ‘Next’ again shows the scan initiation screen. These two screens are shown below
+</p>
+<img class="img-rounded" src="" alt="Figure 13: Second instruction screen and scan initiation screen" width="600" style="text-align: center">
+<img class="img-rounded" src="" alt="Figure 13: Second instruction screen and scan initiation screen" width="600" style="text-align: center">
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  Pressing on the green ‘Scan’ button on the scan screen displays the camera window on the PiTFT screen which the users can then use to orient their QR code for scanning.
+  Once the scan is successful the user is redirected to their already existing playlist and from there the user can use hand gestures to play/pause, change songs, and increase/decrease volume. There is also a ‘Quit’ button in the GUI which takes the users back to the initial start screen once they are finished playing songs. The music playing user interface is shown below.
+</p>
+<img class="img-rounded" src="" alt="Figure 14: Music Playing Interface" width="600" style="text-align: center">
+<br>
+<br>
+<h4 style="text-align: left;text-indent: 0.8cm">Mounting scheme: CAD and 3D printing: </h4>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+In designing our mounting enclosure for the hardware, we began by listing the needs of our electrical system. First was our primary motivation for the mechanical component: a mounting scheme for the break-beam sensors that would align both pairs and raise them to a height that was suitable for controlling with hand gestures. Second, we also wanted a cover to contain all of the wiring and breadboard, so that it would be out of sight of the user as well as protected from any accidental motion or snags that could disrupt its function. We also decided that we wanted a cutout to place the ultrasonic sensor in the center of the mounting enclosure. Finally, we decided that we wanted a stand for the Raspberry Pi to act as a display, as well as a place to mount the PiCamera.
+  <br>
+  <br>
+  After determining the needs of our mechanical system, we sketched out a rough idea of what we wanted the prototype to look like. Our preliminary design sketch can be found in Figure 15.
+</p>
+<img class="img-rounded" src="" alt="Figure 15: Initial sketch of mounting enclosure design" width="600" style="text-align: center">
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  We also measured all the electrical parts with calipers to ensure exact fits in our prototype, including the break-beam sensors (and their mounting hole diameters), the ultrasonic sensor, the breadboard, and the Raspberry Pi case. Based on our initial measurements and rough sketch, we rendered our design in CAD using Autodesk Inventor. Different angles of our prototype in CAD can be seen in Figure 16 below.
+</p>
+<img class="img-rounded" src="" alt="Figure 16: Mounting enclosure inCAD" width="600" style="text-align: center">
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+  Finally, we exported the design as a STL file to be 3D printed. However, we ran into some issues with the first iteration of our part, as it was extremely difficult to orient and slice on a 3D printer and used a ton of supports which wastes a lot of material and time. The first iteration rendered in the printer software can be seen in Figure 17 below, with the significant amount of support material highlighted in green. 
+</p>
+<img class="img-rounded" src="" alt="Figure 17: First iteration printing specs and 3D rendering" width="600" style="text-align: center">
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+ To address the printing issues, we chose to split our mounting enclosure into two separate pieces - one for the Raspberry Pi stand, and one for the breadboard cover and sensor mounts. This significantly improved printing time, and reduced the amount of wasted material on supports. The second iteration, with more efficient supports shown in green, can be seen in Figure 18. Note the printing specs again on the right side, which indicate a lower material usage and cut a significant amount of time off of the printing process. The final printed parts can be seen in Figure 19. Once both parts were printed, we assembled the full mounting enclosure by hot gluing them together. 
+</p>
+<img class="img-rounded" src="" alt="Figure 18:  Second iteration printing specs and 3D rendering" width="600" style="text-align: center">
+<img class="img-rounded" src="" alt="Figure 19: Final printed parts" width="600" style="text-align: center">
+<br>
+<br>
+<h4 style="text-align: left;text-indent: 0.8cm">Final product assembly: mechanical and electrical integration: </h4>
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+ Once the 3D printed mounting enclosure was assembled, we mounted our sensors and the Raspberry Pi. The break-beam sensors were assembled on the mounting posts using M1.6 screws. However, we were not able to find M1.6 locknuts, so we secured the screws by placing a drop of hot glue on the back of each 3D printed post. We also taped the ultrasonic sensor to the edges of the enclosure cutout using electrical tape. Finally, to reach the breadboard underneath the enclosure, we spliced jumper wires to the ends of the sensor wires using solder-and-seal heat shrink connectors. Images of the installation process can be seen in Figure 20. 
+</p>
+<img class="img-rounded" src="" alt="Figure 20: Sensor installation pictures" width="600" style="text-align: center">
+<img class="img-rounded" src="" alt="Figure 20: Sensor installation picturess" width="600" style="text-align: center">
+<img class="img-rounded" src="" alt="Figure 20: Sensor installation pictures" width="600" style="text-align: center">
+
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+ Finally, we connected the Raspberry Pi to our setup by sending the PiCobbler breakout cable through the designated cutout in the enclosure. However, when we measured the hardware setup with calipers, we failed to account for the power and AUX connection ports.- ideally, the ledge that holds the Raspberry Pi in our structure would have cutouts for these ports so that we could stand it up vertically. To leave room for the ports, we sat the Raspberry Pi horizontally on the stand, and mounted the PiCamera to the vertical part of the stand.
+</p>
+
       </div>
 
     <hr id='testings'>
