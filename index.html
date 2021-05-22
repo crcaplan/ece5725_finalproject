@@ -95,7 +95,7 @@
             <p style="text-align: left;padding: 0px 30px;">
               <br>In the section below, we will have a more in-depth discussion on how each subsystem is designed.
             </p>
-              <h4 style="text-align: left;text-indent: 0.8cm">QR Code Detection:: </h4>
+              <h4 style="text-align: left;text-indent: 0.8cm">QR Code Detection: </h4>
               <p style="text-align: left;padding: 0px 30px;"> 
                 We began our project by first installing OpenCV on the Raspberry Pi. Following the instructions provided on Canvas, we were able to install OpenCV for Python3. Using a camera installation reference video from the Raspberry Pi official channel, we installed the PiCamera on the Raspberry Pi. Next we used the provided Canvas example on OpenCV to learn how to use OpenCV and to install the required libraries needed for OpenCV and QR code scanners [1]. Following the instructions in [1], we were able to write a python script qr_scanner.py that can scan a QR code using the PiCamera and show the message embedded in the QR code on the PiCamera window and the terminal. We tested the script by checking if the previously generated QR codes can be detected and if the message embedded in the QR code can be read by the camera. Once the script reads the data from the QR code, it checks if the username already exists in a text file called netid.txt where we stored all known users in the system.
                 <br>
@@ -113,7 +113,7 @@
           <img class="img-rounded" src="" alt="Figure 3: PiTFT testing of camera scanner code" width="600" style="text-align: center">
           <br>
           <br>
-              <h4 style="text-align: left;text-indent: 0.8cm">Sensor schematic development:: </h4>
+              <h4 style="text-align: left;text-indent: 0.8cm">Sensor schematic development: </h4>
               <br>
               <br>
               <p style="text-align: left;padding: 0px 30px;">
@@ -128,6 +128,74 @@
                 <br>
                Because we chose to run both the break-beam sensors and the ultrasonic sensor off of a 5V supply from the Raspberry Pi, we needed to step the voltage outputs of these sensors down to 3.3V because this is the maximum logic voltage supported by the Raspberry Pi’s GPIO pins. We initially set up our ultrasonic sensor with a voltage divider which halved the 5V output of the sensor to a maximum of 2.5V. Our initial schematic with this implementation is shown below in Figure 4
             </p>
+            <img class="img-rounded" src="" alt="Figure 4 PiTFT testing of camera scanner code" width="600" style="text-align: center">
+            <br>
+            <br>
+            <p style="text-align: left;padding: 0px 30px;">
+              We believed that this would work as intended because the Raspberry Pi’s logic level threshold is 1.8V, but in our initial tests of the ultrasonic sensor we were not receiving reliable distance readings (which would have translated to spotty volume control). One possible solution would have been to implement voltage dividers that resulted in a 3.3V output, but this would require many resistors and an overly complicated breadboarding process, since we also needed to step down the logic signals from both break-beam receivers. Since all of these signals were digital (hence being read by Raspberry Pi GPIO pins), we did not need to preserve any analog components of the signals, and could implement a simpler logic voltage translation using a 5V to 3.3V level shifter from Sparkfun. This level shifter operates based on two “high” and “low” reference voltages (in our case, 5V and 3.3V respectively, both of which were provided by the Raspberry Pi), and translates up to 4 “high” voltage inputs down to “low” voltages via a network of MOSFETs. We sent both of the break-beam receiver signals through this level shifter, as well as the echo pin of the ultrasonic sensor. At the low side of the level shifter, each of the outputs is sent to a GPIO input-configured pin, with a 1k resistor included as well for current protection. The final schematic can be seen in Figure 5, and the Fritzing project files can be downloaded here.
+          </p>
+          <br>
+          <img class="img-rounded" src="" alt="Figure 5: Final sensor hardware schematic" width="600" style="text-align: center">
+          <br>
+          <br>
+          <h4 style="text-align: left;text-indent: 0.8cm">Sensor Testing: </h4>
+          <br>
+          <br>
+          <p style="text-align: left;padding: 0px 30px;">
+          We tested basic functionality of the break-beam sensors by connecting them as shown/described in the schematic section above, with the receiver output signals connected to GPIO input pins. To observe that they were functioning properly, we ran PiScope as we were instructed to in previous labs in the course. By observing the signals on the two GPIO pins that were connected to receiver outputs, we were able to see that the signals went to logic low when the beam “connections” were broken between sensor pairs, and showed logic high otherwise. These results are shown in the PiScope screenshots below in Figure 6. </p>
+          <br>
+          <img class="img-rounded" src="" alt="Figure 6 PiScope testing of break-beam sensors" width="600" style="text-align: center">
+          <br>
+          <br>
+          <p style="text-align: left;padding: 0px 30px;">
+              We tested basic distance reading functionality of the ultrasonic sensor by writing a short script called distance.py. This script calculates the distance by sending a trigger pulse and the received pulse’s width in time on the echo line. We begin by setting the trigger GPIO output to low for 0.5 seconds to allow the sensor to settle from the last reflected pulse. We then send a pulse out on the trigger pin by setting the GPIO output to high for 0.00001 seconds. Finally, we take a timestamp at the beginning and end of the echo pulse, based on the times that the GPIO input reads logic 0 and 1. Finally, we convert this pulse width to a distance in centimeters using a conversion factor found from the Adafruit site. As can be seen in Figure 8 below, we were able to get fairly accurate readings of around 10cm, with about 8% error from the expected value of 10 that we measured with a tape measure.
+          </p>
+          <img class="img-rounded" src="" alt="Figure 8: Ultrasonic sensor testing with ‘distance.py’" width="600" style="text-align: center">
+          <img class="img-rounded" src="" alt="Figure 8: Ultrasonic sensor testing with ‘distance.py’" width="600" style="text-align: center">
+          <br>
+<br>
+<h4 style="text-align: left;text-indent: 0.8cm">Music playback: OMXPlayer: </h4>
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+    We chose to create an internal song library in our project which is stored locally on the Raspberry Pi. We downloaded mp3 files to put in our library using a YouTube to mp3 conversion site. Initially we wanted to use mplayer to play the music, however when we played music on mplayer opened on a subprocess, it was not responding to the commands that we were sending through subprocess input. After searching we found one project using OMXPlayer for playing music and when we tried OMXPlayer, it was responsive to the commands sent [2]. Thus we decided to use OMXPlayer for the project. The list below describes the OMXPlayer commands that we used in our project to control song playback.
+    <br>
+    <br>
+command                  Function
+q                                exit omxplayer/stop the music playing
+p                                pause/play music
++                                Increase volume
+-	                      decrease volume
+ <br>
+ <br>
+</p>
+<h4 style="text-align: left;text-indent: 0.8cm">Software integration: sensor code for music control: </h4>
+<br>
+<br>
+<p style="text-align: left;padding: 0px 30px;">
+    sensor.py to control music playback. We have a folder called song_library in our project that contains the local song library of all the songs that we downloaded from YouTube, which the users can then select from to make their playlist. We used the glob library from Python to keep the list of all the paths of the songs from the song_library folder in sensor.py. A pointer was used to iterate through the list of the songs in the local library. The songs were played by opening OMXPlayer through a subprocess (just as we did with mplayer in our labs) using the pointer to choose a specific song from the song list, and sending commands to the player through subprocess stdin. 
+    <br>
+    <br>
+    To read from all of the sensors and handle appropriate song playback control, we placed a series of if-else statements inside of a while loop to continuously poll the sensors while leaving room to integrate easily with a Pygame GUI later in the design process.
+    <br>
+    <br>
+   We positioned two emitters and receivers in such a way so that each receiver can receive the signal from a corresponding emitter without interference from one another. The functionalities are described below:
+    <br>
+    <br>
+    i) Play/Pause: Both receivers blocked by hands
+    <br>
+ii) Next song: Right receiver blocked
+    <br>
+iii) Previous song: Left receiver blocked
+<br>
+    <br>
+    Since the emitter and receiver are facing each other, the receiver continuously receives a high signal until the emitter is blocked. Thus we used if else statements to check if GPIO pins connected to receivers are receiving 0 and take appropriate action based on which combinations of receivers are blocked. If the GPIO pin connected to the right receiver gets a ‘0’, the program sends a ‘q’ input signal to the OMXPlayer which stops the player. Next the pointer is incremented by 1 and the player is started again with the next song from the list. Similarly, if the  GPIO pin connected to the left receiver gets a ‘0’, the pointer is decremented and the previous song is selected by quitting and restarting OMXPlayer. We also handle the edge cases when the pointer reaches the end of the list and the beginning of the list by rolling over the pointer to keep it from getting out of range.
+    <br>
+    <br>
+    In order to control volume, we used the function from the ‘distance.py’ testing script to get a distance in centimeters of the user’s hand from the ultrasonic sensor’s base. We called this function after checking both break-beam sensors in the if statements described above, to get the distance of the user’s hand from the sensor. Then, we included an if statement to check if the recorded distance was between 1 and 10 centimeters (so that the sensor doesn’t trigger volume changes from a user’s unintentional motions) and if this was the case we compared it to the current volume and iterated through a for loop to increment or decrement the volume in both our code counter and omxplayer (using the ‘+’ command) until it reached the same number as the distance sensor reading.
+</p>
+<br>
+<br>
       </div>
 
     <hr id='testings'>
