@@ -325,7 +325,11 @@ In designing our mounting enclosure for the hardware, we began by listing the ne
 
       <div style="text-align:center;">
               <h2>Results</h2>
-              <p style="text-align: left;padding: 0px 30px;"></p>
+              <br>
+              <br>
+              <p style="text-align: left;padding: 0px 30px;">
+                Overall, during the course of our final project we were able to accomplish all of the milestones that we planned in our initial project proposal. Our video demo can be seen at the YouTube video linked at the top of this webpage. We did run into a small roadblock during our demo where one team member’s PiTFT touch chip broke an hour before the demo, but since we each prototyped a device, we were able to display touch capabilities on one prototype and the rest of both systems worked as expected.
+              </p>
 
       </div>
     
@@ -334,27 +338,40 @@ In designing our mounting enclosure for the hardware, we began by listing the ne
 
       <div style="text-align:center;">
               <h2>Future Works</h2>
-              <p style="text-align: left;padding: 0px 30px;"> </p>
+              <p style="text-align: left;padding: 0px 30px;">
+                There are a variety of extensions that can be built to improve on this project. The first improvement would be to integrate our system with Spotify’s API, to support an unlimited cloud-based library rather than being limited to the mp3 downloads on the Raspberry Pi’s local system.
+               
+               <br>
+               <br>
+               We could also improve our mounting scheme, by including ports for the AUX and power cords as mentioned before, and by changing the break-beam sensor formation so that the user does not need to use both hands to trigger play/pause. For example, if we set up the sensors in an ‘X’ formation, we could trigger skipping forwards/backwards by gesturing close to a single emitter, and could trigger play/pause by gesturing in the center of the ‘X’ which would trigger all both beams to be broken with a single hand.
+              <br>
+              On the sensor reading side of the software system, we could have improved our processing efficiency by implementing interrupts for the break-beam sensors, rather than a polling-based control scheme.
+              <br>
+              Finally, to make the project truly touchless and create a far more complicated extension to the project, we could try to work with OpenCV for the entire GUI process to detect the user’s hand in a certain location and project it on to the PiTFT screen to trigger “touchless click” events on certain buttons, rather than using the mouse click events we were taught in labs.
+              </p>
+
       </div>
 
       <hr id='conclusion'>
 
       <div style="text-align:center;">
               <h2>Conclusion</h2>
+              <br>
+              <br>
+              <p style="text-align: left;padding: 0px 30px;">
+                For our final project demonstration, our team was able to achieve everything that we laid out in our initial design proposal. We successfully implemented a gesture based music controller with our break-beam and ultrasonic sensors, and we were able to harness the power of OpenCV to use QR codes to link playlists to specific users. We also developed a full Pygame GUI interface to display instructions, visual playback status indicators, and the scanning process to the user, as well as a new user-specific interface with the option to select songs linked to a QR code on the display that the user could save for later use with a smartphone camera.
+                <br>
+                <br>
+                Over the course of the project, we discovered some challenges in hardware/software integration, which taught us to work with level shifters as well as different GPIO reading schemes (including looking for falling edges as we had done in previous labs, and measuring pulse widths). We also encountered challenges in the process of integrating our electrical hardware with a simple mechanical system - neither team member had much experience with mechanical design, so it was a great learning experience to work to develop a mounting scheme that supported our electronics in an elegant and contained manner, and we have a lessons to take away to improve on what we learned in that respect on future projects.
+                <br>
+                </p>
       </div>
 
     <hr>
 
     <div style="font-size:18px; text-align: center">
-      <h2>Parts List</h2>
-      <ul style="text-align: left; text-indent: 10cm">
-          <p>- Raspberry Pi 4 $35.00</p>
-          <a href="https://www.adafruit.com/product/1601"><p>- Adafruit PiTFT $35.00</p></a>
-          <a href="https://www.raspberrypi.org/products/camera-module-v2/"><p>- Raspberry Pi Camera Module V2 $25.00</p></a>
-          <p>- Robot base with DC motors $25.00</p>
-          <p>- LEDs, Resistors and Wires - Provided during the course</p>
-      </ul>
-      <h4 style="text-align: center;">Total: $95.00</h4>
+      <h2>Bill of Material</h2>
+      <p style="text-align: left;padding: 0px 30px;"> The bill of materials for this project can be found <a href="https://docs.google.com/spreadsheets/d/1CFVSIsmqPN1_vM4Kuu_3AgUc6KXV4pgZF3uIWvgZ9iE/edit?usp=sharing">here</a> </p>
   </div>
 
     
@@ -398,8 +415,262 @@ In designing our mounting enclosure for the hardware, we began by listing the ne
       <div class="row" style="font-size:18px">
               <h2>Code Appendix</h2>
               
-              <a href="https://github.com/JonathanNusantara/BallTrackingRobot">Github Repository</a><br><br>
+              <a href="https://github.com/crcaplan/ece5725_finalproject/tree/main">Github Repository</a><br><br>
               <pre><code>
+                # author Tamzid Ahmed(ta326) and Claire Caplan(crc235)
+# main script to start the player
+# date: 05/06/2021
+#import cv2
+import RPi.GPIO as GPIO
+import os
+import pygame, sys
+import pygame.display
+import time
+import sensor
+import new_user
+import cv2
+from pygame.locals import *
+from pygame.locals import *
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+red =  (255,0,0)
+green =  (0,   255,   0)
+black = 0, 0, 0
+white = 255,255,255
+# setting up environment varialble for piTFT
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.putenv('SDL_FBDEV', '/dev/fb0')
+os.putenv('SDL_MOUSEDRV', 'TSLIB')
+os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
+# taken from aircanvas project
+#Rescales the output frame to 320 x 240 screen
+def rescale_frame(frame, wpercent=130, hpercent=130):
+    width = int(frame.shape[1] * wpercent / 100)
+    #print("width: " + str(width) "\n height" )
+    height = int(frame.shape[0] * hpercent / 100)
+    return cv2.resize(frame, (320, 240), interpolation=cv2.INTER_AREA)
+pygame.init()
+pygame.mouse.set_visible(True)
+size = width, height = 320, 240
+screen = pygame.display.set_mode(size)
+my_font = pygame.font.Font(None,30)
+log_font = pygame.font.Font(None,20)
+my_font_coord = pygame.font.Font(None,20)
+b1 = (150,110)
+b2 = (240,220)
+start_screen_buttons = {'Quit':(240,220), 'Start':(80,220), 'Welcome to':(160,80), 'Touchless Music Player!': (160,100)}
+#info_screen1_buttons = {'Quit':(240,220), 'Next':(80,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
+info_screen1_buttons = {'Quit':(260,220), 'Next':(50,220), 'New User':(160,220), 'Scan your QR code to load':(160,80), 'your personal playlist!': (160,100)}
+info_screen2_buttons = {'Quit':(240,220), 'Next':(80,220), 'Play/Pause: cover L/R sensors':(160,80), 'Next track: cover L sensor': (160,100),
+                        'Previous track: cover R sensor': (160,120), 'Volume: Hand distance': (160,140), 'from center sensor':(160,160)}
+my_buttons = {b1:'Scan', b2: 'Quit'}
+cap = cv2.VideoCapture(0)
+# QR code detection object
+detector = cv2.QRCodeDetector()
+scan = False
+start_screen = True
+info_screen1 = False
+info_screen2 = False
+scan_screen = False
+music_screen = False
+while (1):
+    if ( not GPIO.input(27) ):
+        print (" ")
+        print ("Button 27 pressed")
+        GPIO.cleanup()
+        quit()
+        
+    screen.fill(black)
+    if(start_screen):
+        for my_text,text_pos in start_screen_buttons.items():
+                text_surface = my_font.render(my_text,True,white)
+                rect = text_surface.get_rect(center=text_pos)
+                screen.blit(text_surface,rect)
+        for event in pygame.event.get():
+                if(event.type is MOUSEBUTTONDOWN):
+                    pos = pygame.mouse.get_pos()
+                if(event.type is MOUSEBUTTONUP):
+                    pos = pygame.mouse.get_pos()
+                    x,y = pos
+                    if y >200:
+                        #if click in vicinity of quit button, quit
+                        if x > 160:
+                            print ( "quit button pressed" )
+                            cv2.destroyAllWindows()
+                            cap.release()
+                            GPIO.cleanup()
+                            quit()
+                        #if click in vicinity of start button, set flag
+                        if x < 160:
+                            start_screen = False
+                            info_screen1 = True
+        pygame.display.flip()
+    
+    if(info_screen1):
+        screen.fill(black)
+        for my_text,text_pos in info_screen1_buttons.items():
+                text_surface = my_font.render(my_text,True,white)
+                rect = text_surface.get_rect(center=text_pos)
+                screen.blit(text_surface,rect)
+        for event in pygame.event.get():
+                if(event.type is MOUSEBUTTONDOWN):
+                    pos = pygame.mouse.get_pos()
+                if(event.type is MOUSEBUTTONUP):
+                    pos = pygame.mouse.get_pos()
+                    x,y = pos
+                    if y >200:
+                        #if click in vicinity of next button, set flag
+                        if x < 80:
+                            info_screen1 = False
+                            info_screen2 = True
+                        elif x < 200:
+                            print("hello")
+                            new_user.create_new_user()
+                        elif x > 220:
+                            #if click in vicinity of quit button, quit
+                            print ( "quit button pressed" )
+                            cv2.destroyAllWindows()
+                            cap.release()
+                            GPIO.cleanup()
+                            quit()
+        pygame.display.flip()
+    
+    if(info_screen2):
+        screen.fill(black)
+        for my_text,text_pos in info_screen2_buttons.items():
+                text_surface = my_font.render(my_text,True,white)
+                rect = text_surface.get_rect(center=text_pos)
+                screen.blit(text_surface,rect)
+        for event in pygame.event.get():
+                if(event.type is MOUSEBUTTONDOWN):
+                    pos = pygame.mouse.get_pos()
+                if(event.type is MOUSEBUTTONUP):
+                    pos = pygame.mouse.get_pos()
+                    x,y = pos
+                    if y >200:
+                        #if click in vicinity of quit button, quit
+                        if x > 160:
+                            print ( "quit button pressed" )
+                            cv2.destroyAllWindows()
+                            cap.release()
+                            GPIO.cleanup()
+                            quit()
+                        #if click in vicinity of next button, set flag
+                        if x < 160:
+                            info_screen2 = False
+                            scan_screen = True
+        pygame.display.flip()
+    
+    if(scan_screen):
+        screen.fill(black)
+        # set up camera object
+        pos = (150,110)
+        if (my_buttons[b1] == 'scan'):
+            rectangle = pygame.draw.rect(screen, red, pygame.Rect(90, 60, 120, 120))
+            rectangle.move(pos)
+        else:
+            rectangle = pygame.draw.rect(screen, green, pygame.Rect(90, 60, 120, 120))
+            rectangle.move(pos)
+        for text_pos,my_text in my_buttons.items():
+            if ( my_text == 'scan'):
+                text_surface = my_font.render(my_text,True, white)
+                rect = text_surface.get_rect(center=text_pos)
+                screen.blit(text_surface,rect)
+            else:
+                text_surface = my_font.render(my_text,True, white)
+                rect = text_surface.get_rect(center=text_pos)
+                screen.blit(text_surface,rect)
+        pygame.display.flip()
+        for event in pygame.event.get():
+                if(event.type is MOUSEBUTTONDOWN):
+                    pos = pygame.mouse.get_pos()
+                if(event.type is MOUSEBUTTONUP):
+                    pos = pygame.mouse.get_pos()
+                    x,y = pos
+                    if ( y > 180 ):
+                        if ( x > 190 ):
+                            print ( "quit button pressed" )
+                            cv2.destroyAllWindows()
+                            cap.release()
+                            GPIO.cleanup()
+                            quit()
+                    if ( y > 30 and y < 170 ):
+                        if ( x> 30 and x < 170):
+                            scan = True
+                            
+        #video_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        #video_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        while scan:
+            if ( not GPIO.input(27) ):
+                print (" ")
+                print ("Button 27 pressed")
+                cv2.destroyAllWindows()
+                cap.release()
+                quit()
+            for event in pygame.event.get():
+                if(event.type is MOUSEBUTTONDOWN):
+                    pos = pygame.mouse.get_pos()
+                if(event.type is MOUSEBUTTONUP):
+                    pos = pygame.mouse.get_pos()
+                    x,y = pos
+                    if ( y > 180 ):
+                        if ( x > 190 ):
+                            print ( "quit button pressed" )
+                            cv2.destroyAllWindows()
+                            cap.release()
+                            GPIO.cleanup()
+                            quit()
+            
+            # get the image
+            _, img = cap.read()
+            #Rescale the display frame to 320 x 240 pixels
+            rescaled_frame = rescale_frame(img)
+            surface = pygame.surfarray.make_surface(rescaled_frame.transpose(1,0,2)[...,::-1])
+            surface.convert()
+            screen.blit(surface, (0,0))
+            pos = (150,110)
+            pygame.display.flip()
+            # get bounding box coords and data
+            data, bbox, _ = detector.detectAndDecode(img)
+            # if there is a bounding box, draw one, along with the data
+            if(bbox is not None):
+                for i in range(len(bbox)):
+                    cv2.line(img, tuple(bbox[i][0]), tuple(bbox[(i+1) % len(bbox)][0]), color=(255,
+                         0, 255), thickness=2)
+                cv2.putText(img, data, (int(bbox[0][0][0]), int(bbox[0][0][1]) - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5, (0, 255, 0), 2)
+            os.chdir('/home/pi/ece5725_finalproject')
+            if data:
+                #time.sleep(1) # this stops continous detection of data
+                print("data found: ", data)
+                # display the image preview
+                with open('netid.txt') as f:
+                    lines = f.readlines()
+                    for line in lines:
+                        #print('line is ', line)
+                        #print('data is ' , data)
+                        if ( line.rstrip() == data ):
+                            print("match found")
+                            sensor.play_music(data)
+                            os.chdir('/home/pi/ece5725_finalproject')
+                            scan = False
+                            scan_screen = False
+                            start_screen = True
+            if(cv2.waitKey(1) == ord("q")):
+                break
+    """
+        
+    if(music_screen):
+        sensor.play_music('ta326')
+        os.chdir('.') """
+
+
+
+
+# free camera object and exit
+cap.release()
+cv2.destroyAllWindows()
+GPIO.cleanup()
               </code></pre>
       </div>
 
