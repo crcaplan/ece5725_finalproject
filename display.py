@@ -1,5 +1,5 @@
 # author Tamzid Ahmed(ta326) and Claire Caplan(crc235)
-# code to  scan QR code
+# main script to start the player
 # date: 05/06/2021
 #import cv2
 import RPi.GPIO as GPIO
