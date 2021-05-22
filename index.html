@@ -1,8 +1,8 @@
 
 <!DOCTYPE html>
-<!-- saved from url=(0048)https://crcaplan.github.io/ece5725_finalproject/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -12,17 +12,17 @@
     <title>ECE 5725: Touchless Music Player</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="./ECE 5725_ Touchless Music Player_files/bootstrap.min.css" rel="stylesheet">
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
     <!-- Custom styles for this template -->
-    <link href="./ECE 5725_ Touchless Music Player_files/starter-template.css" rel="stylesheet">
+    <link href="starter-template.css" rel="stylesheet">
 
   </head>
 
-  <body style="background-color:whitesmoke;" data-new-gr-c-s-check-loaded="14.1012.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1012.0">
+  <body style="background-color:whitesmoke;">
 
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #0a6194">
       <div class="container">
@@ -33,17 +33,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="https://crcaplan.github.io/ece5725_finalproject/#">Touchless Music Player</a>
+          <a class="navbar-brand" href="#">Touchless Music Player</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#">Home</a></li>
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#obj">Objective</a></li>
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#intro">Introduction</a></li>
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#design">Design &amp; Testing</a></li>
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#results">Results</a></li>
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#future">Future Works</a></li>
-            <li><a href="https://crcaplan.github.io/ece5725_finalproject/#conclusion">Conclusion</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#obj">Objective</a></li>
+            <li><a href="#design">Design</a></li>
+            <li><a href="#testings">Testings</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#future">Future Works</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -59,25 +60,21 @@
       <hr>
       <div class="center-block">
           <h2 style="text-align:center;">Demonstration Video</h2>
-          <iframe width="640" height="360" src="https://www.cornell.edu/video/glorious-to-view" frameborder="0" allowfullscreen=""></iframe>
+          <iframe width="640" height="360" src="https://www.cornell.edu/video/glorious-to-view" frameborder="0" allowfullscreen></iframe>
       </div>
 
-    <hr id="obj">
+      <hr id='obj'>
+
     <div style="text-align:center;">
         <h2>Objective</h2>
         <p style="text-align: left;padding: 0px 30px;">Touchless music player uses a Raspberry Pi to function as a jukebox by allowing users to make their own personalized playlist and select a song to be played from the playlist on a speaker connected to the Raspberry Pi. Each user has their own QR code that they need to scan so that their playlist can be displayed on piTFT from which they can select the song that they want to play through hand gestures</p>
-    <br>
-        <img class="img-rounded" src="https://crcaplan.github.io/ece5725_finalproject/" alt="picture of the 3d structure" style="width:30%;">
-    <br>
-Figure 1: Finished “Touchless Music Player” prototype
-
     </div>
 
     <hr id="intro">
     <div style="text-align:center;">
       <h2>Introduction</h2>
       <p style="text-align: left;padding: 0px 30px;"> The project started with installing opencv and required libraries on Raspberry Pi. We installed piCamera and integrated it with openCV to detect QR code when the user holds the QRcode in front of the camera. We wrote a python script to detect the QRcode using openCV and qrcode library from python. Next we collected all the required parts needed for the hand gesture recognition circuit. We used Adafruit break beam sensors for song selection, play/pause and an ultrasonic sensor to control the volume. The explanation of how the circuit works will be explained in the design section. Once we made a schematic for the hand gesture and checked the correctness of the circuit with the TAs we tested the circuit by checking the piscope signal and writing python scripts and checking the outputs in the terminal. After that we wrote a script to control song selection using IR sensors and volume control using ultrasonic sensors. Once the song selection was working, we had to integrate the QR scanning with song selection so that once the users scan their QR code, they can play music using hand gestures. We also added an option for a new user to receive a QR code and select the songs that they want to be in their playlist. Once all the programming was done, we also made a 3D printed structure to hold the whole music system. Our device, as well as both team members, can be seen in Figure 1 below. </p>
-    </div>
+  </div>
     <!--
     <div style="text-align:center;">
             <h2>Introduction</h2>
@@ -89,30 +86,44 @@ Figure 1: Finished “Touchless Music Player” prototype
     -->
     
 
-    <hr id="design">
+    <hr id='design'>
 
       <div style="text-align:center;">
-        <h2>Design and Testing</h2>             
-        <h4 style="text-align: left;text-indent: 0.8cm">QR Code Detection:</h4>
-        <p style="text-align: left;padding: 0px 30px;"> We began our project by first installing OpenCV on the Raspberry Pi. Following the instructions provided on Canvas, we were able to install OpenCV for Python3. Using a camera installation reference video from the Raspberry Pi official channel, we installed the PiCamera on the Raspberry Pi. Next we used the provided Canvas example on OpenCV to learn how to use OpenCV and to install the required libraries needed for OpenCV and QR code scanners [1]. Following the instructions in [1], we were able to write a python script qr_scanner.py that can scan a QR code using the PiCamera and show the message embedded in the QR code on the PiCamera window and the terminal. We tested the script by checking if the previously generated QR codes can be detected and if the message embedded in the QR code can be read by the camera. Once the script reads the data from the QR code, it checks if the username already exists in a text file called netid.txt where we stored all known users in the system. We also integrated the QR scanner code with pygame to instruct the user to begin the scan and show on the Pygame GUI if the scan succeeded. Figure 2 below shows some pictures of the pygame window for showing how the scan works. </p>
-        <br>
-        <p> All the testing early in the project development was done on the desktop, where the Pygame GUI and camera feed were in two separate windows like in Figure 3 below. </p>
-        <br>
-        <img class="img-rounded" src="https://crcaplan.github.io/ece5725_finalproject/" alt="Desktop testing of camera scanner code" style="width:30%;">
-        <br>
-     Figure 2: Desktop testing of camera scanner code
-       <p>We wanted our project to be deployed on a standalone Raspberry Pi and thus we needed the camera window to show up on the PiTFT display. Initially we could not get the camera window to show up on the PiTFT display as our program would just hang and the PiTFT would not respond to any further inputs. After following references from the Air Canvas project from Fall 2019 we were able to make the camera window show up on PiTFT. We needed to rescale the PiCamera feed window to PiTFT screen size(320x240) and render the camera display on the Pygame window, which we implemented in a helper function, and then the camera feed showed up as expected. This is seen below in Figure 3. </p>
-       <br>
-       <img class="img-rounded" src="https://crcaplan.github.io/ece5725_finalproject/" alt="picture of the 3d structure" style="width:30%;">
-       <br>
-      Figure 3: PiTFT testing of camera scanner code
-      <h4 style="text-align: left;text-indent: 0.8cm">Sensor Schematic development</h4>
-      <p> Initially, we planned to use a combination of IR emitters and photodiodes to sense hand motions for play/pause control and skipping/rewinding tracks, and an ultrasonic sensor to control volume based on hand distance from the music playing unit. However, the IR emitter/photodiode pairs would have required an unnecessarily complicated hardware setup involving a tunable amplifier circuit with an op-amp and potentiometers in order to be read by the Raspberry Pi GPIO pins. At the suggestion of the professor, we elected to design our hand motion detection hardware around two emitter/receiver pairs of Adafruit break-beam sensors, which simplified this aspect of the hardware greatly and increased its reliability
-The break-beam sensors come in emitter/receiver pairs. The emitter is connected to a voltage source and grounded, and emits a constant IR beam. The receiver is an IR-sensitive device, and is also connected to the same voltage source and ground, but it includes an additional signal output. When the beam “connection” is broken by a non IR-transparent object (for example, the human hand), this signal output will drop to a logic low which can be detected by a Raspberry Pi GPIO input-configured pin.
-     </p>
+              <h2>Design</h2>
+              <p style="text-align: left;padding: 0px 30px;">                
+              </p>
+                <br>
+                <img class="img-rounded" src="" alt="Generic placeholder image" width="600" style="text-align: center">
+                <br> A picture of the design
+              <p style="text-align: left;padding: 0px 30px;">  
+              </p>
+                <br>
+                <!-- <img class="img-rounded" src="pics/ball-diagram.png" alt="Generic placeholder image" width="600">  -->              
+            <p style="text-align: left;padding: 0px 30px;">
+                
+            
+                <br>In the section below, we will have a more in-depth discussion on how each subsystem is designed.
+            </p>
+              <h4 style="text-align: left;text-indent: 0.8cm">Ball tracking system: </h4>
+              <p style="text-align: left;padding: 0px 30px;"> </p>
 
-    </div>
-    <!--
+            </p>
+              <h4 style="text-align: left;text-indent: 0.8cm">Hand gesture detection: </h4>
+             <!--
+              <h4 style="text-align: left;text-indent: 0.8cm">Motor Control: </h4>
+              <p style="text-align: left;padding: 0px 30px;">The robot system was based on the robot base platform used in ECE 5725 labs. The robot base is driven by two DC motors, which are connected to a motor controller. Using the motor controller, we are able to control the speed of the motor using the duty cycle of the PWM signal and to control the motor direction using the direction pin signals. The connection setup of a single motor is shown below.</p>
+              <img class="img-rounded" src="pics/circuit1.png" alt="Generic placeholder image" width="600" style="text-align: center">
+              <br>Schematic diagram of a single motor setup.<br><br>
+              <p style="text-align: left;padding: 0px 30px;">During the manual forward and backward movement, the robot will have a constant duty cycle and direction throughout the process. On the other hand, during the ball tracking mode, we are setting the individual motor speed depending of the position of the tracked ball. We decided to use a PID control algorithm to calculate the duty cycle of the PWM signal for the each motor. This would allow a smooth steering of the robot in tracking the ball.</p>
+              <img class="img-rounded" src="pics/pid.jpeg" alt="Generic placeholder image" width="600" style="text-align: center">
+              <br>Flowchart of a PID control algorithm.<br><br>
+              <p style="text-align: left;padding: 0px 30px;">We have decided to only use PD control considering that our robot was a relatively simple system. The integral control would add complexity to our program and could possibly cause problems more than improve the performance of our robot. In the ball detection program, the distance from the edge of the ball to the edge of the screen was calculated for both sides of the ball. The PD control used these two values as the inputs. Two separate functions were used to calculate the speed of two motors. The proportional term of the motor speed was calculated by the distance times the proportional coefficient (kp), where the motor will be faster if the ball is further, and vice versa. The derivative term was calculated by the current distance minus the distance in the previous frame then times the derivative coefficient (kd), which allows some level of smoothing for velocity changes.</p>
+              <p style="text-align: center;padding: 0px 30px;">speed = kp * distance + kd * (distance - previous_distance)</p>
+              <h4 style="text-align: left;text-indent: 0.8cm">User Interface: </h4>
+              <p style="text-align: left;padding: 0px 30px;">The User Interface will be displayed on the touchscreen PiTFT display attached to the Raspberry Pi. This will be done using the PyGame library, which allows us to display text or buttons on the display.
+                The display will be rather simple with a goal of an "easy-to-use" robot. During the "Stop" mode, the screen will display a green button to go to the "Ball-Tracking" mode. It will also display the current robot mode mode. During any other mode where the robot will be moving, the screen will display the red button to go to "Stop" mode. During the "Ball-Tracking" mode, aside from displaying the red button, it will also display how far the detected ball is from the robot in centimeters. </p> -->
+      </div>
+
     <hr id='testings'>
 
       <div style="text-align:center;">
@@ -149,12 +160,12 @@ The break-beam sensors come in emitter/receiver pairs. The emitter is connected 
       <div style="text-align: center">
         <img class="img-rounded" src="" alt="Generic placeholder image" style="width:30%;">
         <img class="img-rounded" src="" alt="Generic placeholder image" style="width:30%;">
-    </div> -->
+    </div>
       
       
             
 
-    <hr id="results">
+    <hr id='results'>
 
       <div style="text-align:center;">
               <h2>Results</h2>
@@ -163,14 +174,14 @@ The break-beam sensors come in emitter/receiver pairs. The emitter is connected 
       </div>
     
     
-      <hr id="future">
+      <hr id='future'>
 
       <div style="text-align:center;">
               <h2>Future Works</h2>
               <p style="text-align: left;padding: 0px 30px;"> </p>
       </div>
 
-      <hr id="conclusion">
+      <hr id='conclusion'>
 
       <div style="text-align:center;">
               <h2>Conclusion</h2>
@@ -197,20 +208,20 @@ The break-beam sensors come in emitter/receiver pairs. The emitter is connected 
     <div class="row" style="text-align:center;">
       <h2>Work Distribution</h2>
       <div class="col-md-6" style="font-size:16px">
-          <img class="img-rounded" src="https://crcaplan.github.io/ece5725_finalproject/" alt="Generic placeholder image" width="240" height="240">
+          <img class="img-rounded" src="" alt="Generic placeholder image" width="240" height="240">
           <h3>Tamzid Ahmed</h3>
           <p class="lead">ta326@cornell.edu<br>ECE '21</p>
           <div style="text-align:left">
             <li>some work
-          </li></div>
+          </div>
       </div>
       <div class="col-md-6" style="font-size:16px">
-          <img class="img-rounded" src="https://crcaplan.github.io/ece5725_finalproject/" alt="Generic placeholder image" width="240" height="240">
+          <img class="img-rounded" src="" alt="Generic placeholder image" width="240" height="240">
           <h3>Claire Caplan</h3>
           <p class="lead">crc236@cornell.edu<br>ECE '21</p>
           <div style="text-align:left">
                 <li>
-          </li></div>
+          </div>
       </div>
   </div>
 
@@ -244,11 +255,10 @@ The break-beam sensors come in emitter/receiver pairs. The emitter is connected 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./ECE 5725_ Touchless Music Player_files/jquery.min.js.download"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="./ECE 5725_ Touchless Music Player_files/bootstrap.min.js.download"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
-  
-
-</body></html>
+  </body>
+</html>
