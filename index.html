@@ -137,7 +137,7 @@
             <br>
             Fig: 4 First iteration of sensor hardware schematic
             <p style="text-align: left;padding: 0px 30px;">
-              We believed that this would work as intended because the Raspberry Pi’s logic level threshold is 1.8V, but in our initial tests of the ultrasonic sensor we were not receiving reliable distance readings (which would have translated to spotty volume control). One possible solution would have been to implement voltage dividers that resulted in a 3.3V output, but this would require many resistors and an overly complicated breadboarding process, since we also needed to step down the logic signals from both break-beam receivers. Since all of these signals were digital (hence being read by Raspberry Pi GPIO pins), we did not need to preserve any analog components of the signals, and could implement a simpler logic voltage translation using a 5V to 3.3V level shifter from Sparkfun. This level shifter operates based on two “high” and “low” reference voltages (in our case, 5V and 3.3V respectively, both of which were provided by the Raspberry Pi), and translates up to 4 “high” voltage inputs down to “low” voltages via a network of MOSFETs. We sent both of the break-beam receiver signals through this level shifter, as well as the echo pin of the ultrasonic sensor. At the low side of the level shifter, each of the outputs is sent to a GPIO input-configured pin, with a 1k resistor included as well for current protection. The final schematic can be seen in Figure 5, and the Fritzing project files can be downloaded here.
+              We believed that this would work as intended because the Raspberry Pi’s logic level threshold is 1.8V, but in our initial tests of the ultrasonic sensor we were not receiving reliable distance readings (which would have translated to spotty volume control). One possible solution would have been to implement voltage dividers that resulted in a 3.3V output, but this would require many resistors and an overly complicated breadboarding process, since we also needed to step down the logic signals from both break-beam receivers. Since all of these signals were digital (hence being read by Raspberry Pi GPIO pins), we did not need to preserve any analog components of the signals, and could implement a simpler logic voltage translation using a 5V to 3.3V level shifter from Sparkfun. This level shifter operates based on two “high” and “low” reference voltages (in our case, 5V and 3.3V respectively, both of which were provided by the Raspberry Pi), and translates up to 4 “high” voltage inputs down to “low” voltages via a network of MOSFETs. We sent both of the break-beam receiver signals through this level shifter, as well as the echo pin of the ultrasonic sensor. At the low side of the level shifter, each of the outputs is sent to a GPIO input-configured pin, with a 1k resistor included as well for current protection. The final schematic can be seen in Figure 5, and the Fritzing project files can be downloaded <a href="https://drive.google.com/file/d/18tUISSYGn6ucZvrbzQShGo0sicTQERgS/view">here.</a>
           </p>
           <br>
           <img class="img-rounded" src="pics/Fig5.jpg" alt="Figure 5: Final sensor hardware schematic" width="600" style="text-align: center">
@@ -272,7 +272,7 @@ Figure 15: Mounting enclosure inCAD
 <p style="text-align: left;padding: 0px 30px;">
   Finally, we exported the design as a STL file to be 3D printed. However, we ran into some issues with the first iteration of our part, as it was extremely difficult to orient and slice on a 3D printer and used a ton of supports which wastes a lot of material and time. The first iteration rendered in the printer software can be seen in Figure 17 below, with the significant amount of support material highlighted in green. 
 </p>
-<img class="img-rounded" src="pics/Fig16.jpg" alt="Figure 16: First iteration printing specs and 3D rendering" width="600" style="text-align: center">
+<img class="img-rounded" src="pics/Fig16.png" alt="Figure 16: First iteration printing specs and 3D rendering" width="600" style="text-align: center">
 <br>
 Figure 16: First iteration printing specs and 3D rendering
 <br>
@@ -292,12 +292,12 @@ Figure 18: Final printed parts
 <p style="text-align: left;padding: 0px 30px;">
  Once the 3D printed mounting enclosure was assembled, we mounted our sensors and the Raspberry Pi. The break-beam sensors were assembled on the mounting posts using M1.6 screws. However, we were not able to find M1.6 locknuts, so we secured the screws by placing a drop of hot glue on the back of each 3D printed post. We also taped the ultrasonic sensor to the edges of the enclosure cutout using electrical tape. Finally, to reach the breadboard underneath the enclosure, we spliced jumper wires to the ends of the sensor wires using solder-and-seal heat shrink connectors. Images of the installation process can be seen in Figure 20. 
 </p>
-<img class="img-rounded" src="pics/Fig19_1.jpg" alt="Figure 20: Sensor installation pictures" width="600" style="text-align: center">
-<img class="img-rounded" src="pics/Fig19_2.jpg" alt="Figure 20: Sensor installation picturess" width="600" style="text-align: center">
+<img class="img-rounded" src="pics/Fig18_1.jpg" alt="Figure 19: Sensor installation pictures" width="600" style="text-align: center">
+<img class="img-rounded" src="pics/Fig18_2.jpg" alt="Figure 19: Sensor installation picturess" width="600" style="text-align: center">
 <br>
-<img class="img-rounded" src="pics/Fig19_3.jpg" alt="Figure 20: Sensor installation pictures" width="600" style="text-align: center">
+<img class="img-rounded" src="pics/Fig18_3.jpg" alt="Figure 19: Sensor installation pictures" width="600" style="text-align: center">
 <br>
-Figure 20: Sensor installation pictures
+Figure 19: Sensor installation pictures
 <br>
 <p style="text-align: left;padding: 0px 30px;">
  Finally, we connected the Raspberry Pi to our setup by sending the PiCobbler breakout cable through the designated cutout in the enclosure. However, when we measured the hardware setup with calipers, we failed to account for the power and AUX connection ports.- ideally, the ledge that holds the Raspberry Pi in our structure would have cutouts for these ports so that we could stand it up vertically. To leave room for the ports, we sat the Raspberry Pi horizontally on the stand, and mounted the PiCamera to the vertical part of the stand.
@@ -376,7 +376,6 @@ Figure 20: Sensor installation pictures
           <h3>Tamzid Ahmed</h3>
           <p class="lead">ta326@cornell.edu<br>ECE '21</p>
           <div style="text-align:left">
-            <li>some work
           </div>
       </div>
       <div class="col-md-6" style="font-size:16px">
@@ -387,6 +386,15 @@ Figure 20: Sensor installation pictures
                 <li>
           </div>
       </div>
+
+      <br>
+      <p style="text-align: left;padding: 0px 30px;"> 
+        Claire Caplan: hardware schematic design/Fritzing project, 3D printing and CAD, sensor testing, volume control code, and music player portion of GUI
+        <br>
+        <br>
+        Tamzid Ahmed: OpenCV and QR code detection, working with PiCamera video feed on PiTFT, new user, start/instructions, and scanning portions of GUI
+      </p>
+
   </div>
 
       <hr>
